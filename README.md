@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.10 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.11 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -42,7 +42,7 @@ Copie de travail Windows : `C:\Apps\meshia`. Sur le ThinkCentre, le service tour
 - **Nœud** : Seeed XIAO ESP32-S3 + Wio-SX1262, firmware Companion Radio USB. Il transporte uniquement les messages privés.
 - **ThinkCentre** : `ingest.py` lit les fiches et reconstruit la base ; `meshia.py` écoute le port série, cherche la meilleure fiche FTS5, reformule éventuellement via Ollama, et répond en messages courts.
 - **Portail web** : Flask dans le venv, `meshia-web.service`, Apache `ProxyPass /meshia` → `127.0.0.1:8765`. Auth locale, saisie/import de fiches, recherche FTS5 (texte brut, sans Ollama).
-- **Fiches** : 64 fichiers Markdown dans `fiches/` (exemples + extraits wiki resilience, MeshCore Bretagne, Meshtastic). Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
+- **Fiches** : 63 fichiers Markdown dans `fiches/` (exemples + extraits wiki resilience, MeshCore Bretagne, Meshtastic). Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
 
 ## Matériel et machine
 
@@ -60,7 +60,7 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 ## État d’avancement
 
 - **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
-- **Étape 6** : faite. `ingest.py`, `meshia.py` et **64 fiches** indexées. Réponses en message privé MeshCore.
+- **Étape 6** : faite. `ingest.py`, `meshia.py` et **63 fiches** indexées. Réponses en message privé MeshCore.
 - **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active**.
 - **Étape 7** : faite. Ollama local `qwen2.5:0.5b`, `MESHIA_LLM=1` (défini dans l’unité systemd) reformule la fiche FTS5, avec fallback texte brut si Ollama est down. RAG = FTS5 ; embeddings plus tard.
 - **Portail web** : fait. `http://192.168.1.57/meshia` (LAN, login/mot de passe). Unité `meshia-web.service` distincte : ne touche ni `meshia.service`, ni `/dev/ttyACM0`, ni Ollama.
@@ -83,7 +83,7 @@ Sur le ThinkCentre, sous `/opt/meshia` :
 ```
 /opt/meshia/
   .venv/          # Python : meshcore, pyserial, flask, waitress, python-docx (non versionné)
-  fiches/         # 64 fichiers .md
+  fiches/         # 63 fichiers .md
   ingest.py
   meshia.py
   meshia.db       # généré par ingest.py (non versionné)
@@ -96,13 +96,13 @@ Unités systemd : `/etc/systemd/system/meshia.service` (radio) et `meshia-web.se
 
 ## Fiches et sources wiki
 
-**64 fiches** indexées. Origine :
+**63 fiches** indexées. Origine :
 
 - 5 exemples de départ (`brulure`, `saignement`, `eau`, `radio`, `urgence`) ;
 - extraits du wiki [wiki-resilience-pi / wiki_pages](https://github.com/brunodesannicolas/wiki-resilience-pi/tree/main/wiki_pages) (**32 pages**, y compris les `start.txt`) ;
-- extraits [wiki.meshcore.bzh](https://wiki.meshcore.bzh/) (MeshCore Bretagne) et [DeepWiki Meshtastic](https://deepwiki.com/meshtastic/meshtastic) : titres distincts MeshCore vs Meshtastic (ex. `MeshCore`, `Meshtastic`, `Repeater` vs `Router`).
+- extraits [wiki.meshcore.bzh](https://wiki.meshcore.bzh/) (MeshCore Bretagne) et [DeepWiki Meshtastic](https://deepwiki.com/meshtastic/meshtastic) : titres distincts MeshCore vs Meshtastic (ex. `MeshCore`, `Repeater` vs `Router`). Pas de fiche `Meshtastic` (mot-clé trop large).
 
-Dernier parcours mesh : 17 fiches — MeshCore, Companion, Repeater, Regions, EUNarrow, Flasher, DutyCycle, Hop, Meshtastic, ClientMute, Router, LongFast, Channel, MeshtasticApp, MeshtasticFlash, LoRaWAN, XIAO. Ignorés : accueil, hubs vides, comparateur/catalogues, contact, tuto induction, internals firmware DeepWiki.
+Dernier parcours mesh : 16 fiches — MeshCore, Companion, Repeater, Regions, EUNarrow, Flasher, DutyCycle, Hop, ClientMute, Router, LongFast, Channel, MeshtasticApp, MeshtasticFlash, LoRaWAN, XIAO. Ignorés : accueil, hubs vides, comparateur/catalogues, contact, tuto induction, internals firmware DeepWiki, fiche `meshtastic.md` retirée.
 
 ## Variables d’environnement
 
@@ -134,7 +134,7 @@ python ingest.py fiches
 sqlite3 meshia.db "SELECT titre FROM fiches"
 ```
 
-Sortie attendue : `64 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
+Sortie attendue : `63 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
 
 Le service 24/7 est **systemd**. Un seul process sur `/dev/ttyACM0` : ne pas lancer `python meshia.py` à la main tant que l’unité tourne.
 
