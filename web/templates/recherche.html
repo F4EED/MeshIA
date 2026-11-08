@@ -4,31 +4,35 @@
 {% block body %}
 <div class="card">
   <h2>Recherche</h2>
-  <form method="get" action="{{ url_for('recherche') }}">
-    <label for="q">Question ou mot-clé</label>
-    <input id="q" name="q" type="text" value="{{ question }}" required placeholder="Ex. radio, communication, aide" autofocus>
-    <button class="primaire" type="submit">Chercher</button>
+  <form id="form-recherche" class="cherche" method="get" action="/meshia/recherche" role="search">
+    <label for="q" class="sr-only">Question ou mot-clé</label>
+    <input id="q" name="q" type="text" value="{{ question }}" required placeholder="radio, communication, aide…" autocomplete="off" autofocus>
+    <button id="chercher" class="primaire" type="submit">Chercher</button>
   </form>
 
+  {% if question %}
+  <p class="statut" role="status">Recherche envoyée : « {{ question }} »{% if resultat %} — réponse ci-dessous.{% endif %}</p>
+  {% endif %}
+
   {% if resultat %}
-  <section id="resultat" class="fiche{% if resultat.vide %} vide{% endif %}">
+  <article id="resultat" class="reponse{% if resultat.vide %} vide{% endif %}">
     {% if resultat.vide %}
-      <p class="badge">Aucun résultat FTS5</p>
+      <p class="badge">Aucun résultat</p>
       <h3>Rien trouvé</h3>
       <p class="corps">{{ resultat.contenu }}</p>
     {% else %}
-      <p class="badge">{% if resultat.aide %}Liste des sujets{% else %}Fiche qui partirait à la radio{% endif %}</p>
+      <p class="badge">{% if resultat.aide %}Liste des sujets{% else %}Réponse (fiche radio){% endif %}</p>
       <h3>{{ resultat.titre }}</h3>
       <p class="corps">{{ resultat.contenu }}</p>
     {% endif %}
-  </section>
+  </article>
+  {% elif question %}
+  <article id="resultat" class="reponse vide">
+    <p class="badge">Pas de réponse</p>
+    <h3>La recherche a bien été envoyée</h3>
+    <p class="corps">Aucune fiche à afficher. Essayez un autre mot-clé ou tapez <code>aide</code>.</p>
+  </article>
   {% endif %}
-
-  <p class="aide">Même index FTS5 que MeshCore : MATCH, accents ignorés, bm25 (titre ×5). <code>aide</code> liste les sujets. Sans correspondance : « Rien trouvé. Sujets : … ». Texte brut, sans Ollama.</p>
 </div>
-{% if resultat %}
-<script>
-  document.getElementById("resultat")?.scrollIntoView({behavior: "smooth", block: "nearest"});
-</script>
-{% endif %}
+<p class="aide" style="margin:0.8rem 1rem">Index FTS5 MeshCore : MATCH, accents ignorés, bm25. <code>aide</code> liste les sujets.</p>
 {% endblock %}

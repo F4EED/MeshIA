@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import sqlite3
@@ -63,6 +64,8 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_PATH"] = "/meshia"
 app.config["SESSION_COOKIE_SECURE"] = False
 app.config["PERMANENT_SESSION_LIFETIME"] = 8 * 3600
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
+log = logging.getLogger("meshia-web")
 
 
 def _lire_secret() -> str:
@@ -405,15 +408,25 @@ def depuis_url():
 @login_required
 def recherche():
     if request.method == "POST":
-        question = (request.form.get("q") or "").strip()
+        question = (request.form.get("q") or request.args.get("q") or "").strip()
     else:
         question = (request.args.get("q") or "").strip()
     resultat = None
     if question:
         resultat = rechercher_fiche(question)
+        log.info(
+            "recherche user=%s q=%r vide=%s titre=%r",
+            session.get("user"),
+            question,
+            bool(resultat.get("vide")),
+            resultat.get("titre"),
+        )
     elif request.method == "POST":
         flash("Saisissez une question ou un mot-clé.", "err")
-    return render_template("recherche.html", question=question, resultat=resultat)
+    resp = app.make_response(render_template("recherche.html", question=question, resultat=resultat))
+    resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+    resp.headers["Pragma"] = "no-cache"
+    return resp
 
 
 @app.route("/meshia/utilisateurs", methods=["GET", "POST"])

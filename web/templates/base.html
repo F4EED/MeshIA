@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}MeshIA{% endblock %}</title>
   <style>
+    html { color-scheme: light only; }
     :root {
       --bg: #f3efe6;
       --ink: #1c1917;
@@ -106,34 +107,63 @@
     .flash .ok { background: var(--ok-bg); color: var(--ok); }
     .flash .err { background: var(--err-bg); color: var(--err); }
     .aide { color: var(--muted); font-size: 0.92rem; }
-    .fiche {
-      margin: 1rem 0 0;
-      padding: 1rem;
-      background: var(--fiche);
-      border: 2px solid var(--fiche-line);
-      border-radius: 12px;
-      color: var(--ink);
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
     }
-    .fiche.vide {
-      background: var(--err-bg);
-      border-color: var(--err);
+    form.cherche {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+      margin: 0.4rem 0 0.8rem;
     }
-    .fiche .badge {
-      margin: 0 0 0.4rem;
-      font-size: 0.8rem;
+    form.cherche input { margin: 0; flex: 1; }
+    form.cherche button.primaire {
+      width: auto;
+      margin: 0;
+      min-width: 7.5rem;
+      padding: 0.65rem 1rem;
+    }
+    .statut {
+      margin: 0 0 0.75rem;
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      background: #0f766e;
+      color: #fff;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #92400e;
     }
-    .fiche.vide .badge { color: var(--err); }
-    .fiche h3 { margin: 0 0 0.5rem; font-size: 1.25rem; color: var(--ink); }
-    .fiche .corps {
+    .reponse {
+      margin: 0;
+      padding: 1.1rem 1.15rem;
+      background: #fff;
+      color: #111;
+      border: 3px solid #0f766e;
+      border-radius: 10px;
+    }
+    .reponse.vide {
+      border-color: #9f1239;
+      background: #fff;
+    }
+    .reponse .badge {
+      margin: 0 0 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #0f766e;
+    }
+    .reponse.vide .badge { color: #9f1239; }
+    .reponse h3 { margin: 0 0 0.55rem; font-size: 1.45rem; color: #111; }
+    .reponse .corps {
       margin: 0;
       white-space: pre-wrap;
       word-break: break-word;
-      font-size: 1.05rem;
-      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.5;
+      color: #111;
     }
     table { width: 100%; border-collapse: collapse; }
     th, td { text-align: left; padding: 0.45rem 0.3rem; border-bottom: 1px solid var(--line); vertical-align: top; }

@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.8 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.9 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -217,7 +217,7 @@ Le compte `meshia` reste **administrateur** (rôle non rétrogradable, compte no
 
 **Utilisateurs** (administrateurs) : [http://192.168.1.57/meshia/utilisateurs](http://192.168.1.57/meshia/utilisateurs) — lister, créer (avec profil), changer mot de passe, changer le profil, supprimer. Jamais les mots de passe en clair.
 
-**Recherche** : [http://192.168.1.57/meshia/recherche](http://192.168.1.57/meshia/recherche) — même FTS5 `meshia.db` et même logique que `meshia.py` (`MATCH`, accents ignorés, bm25, `aide` / « Rien trouvé »). La fiche (titre + texte brut, sans Ollama) s’affiche **sous le champ**, encadrée. Si FTS5 ne trouve rien : « Rien trouvé. Sujets : … » (jamais une page vide). Exemple : `?q=radio`.
+**Recherche** : [http://192.168.1.57/meshia/recherche](http://192.168.1.57/meshia/recherche) — formulaire GET (`?q=radio` visible dans l’URL). Après **Chercher**, un bandeau vert « Recherche envoyée » puis la fiche **juste en dessous** (titre + texte, cadre contrasté, sans Ollama). Si FTS5 ne trouve rien : « Rien trouvé. Sujets : … ». Forcer le rafraîchissement (Ctrl+F5) si une ancienne page reste en cache.
 
 Service web (ne pas confondre avec `meshia.service` radio) :
 
