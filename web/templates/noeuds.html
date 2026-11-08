@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% set actif = "noeuds" %}
+{% block title %}Nœuds — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Nœuds MeshCore</h2>
+  <p class="aide">Un MP d’un nœud inconnu n’est pas traité : MeshIA répond « Inscription en attente. » et l’inscrit ici. Autoriser pour le flux habituel (aide, fiches, choix de titres). Refuser : un MP « Accès refusé. » une fois, puis silence. Fichier <code>noeuds.db</code> hors git, chmod 600. Page admin seulement.</p>
+</div>
+
+{% for cle, titre in [('attente', 'En attente'), ('autorise', 'Autorisés'), ('refuse', 'Refusés')] %}
+<div class="card" style="margin-top:1rem">
+  <h2>{{ titre }} ({{ groupes[cle]|length }})</h2>
+  {% if not groupes[cle] %}
+  <p class="aide">Aucun nœud.</p>
+  {% else %}
+  <table>
+    <thead>
+      <tr><th>Nom</th><th>Clé / préfixe</th><th>Vu</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for n in groupes[cle] %}
+      <tr>
+        <td><strong>{{ n.nom }}</strong></td>
+        <td>
+          <code title="{{ n.pubkey }}">{{ n.pubkey[:16] }}{% if n.pubkey|length > 16 %}…{% endif %}</code>
+          {% if n.prefix and n.pubkey and n.prefix != n.pubkey[:n.prefix|length] %}
+          <br><span class="aide">préfixe {{ n.prefix }}</span>
+          {% endif %}
+        </td>
+        <td>
+          <span class="aide">1er {{ n.premier_vu }}</span><br>
+          <span class="aide">dernier {{ n.dernier_vu }}</span>
+        </td>
+        <td>
+          <div class="actions">
+            {% if n.statut != 'autorise' %}
+            <form method="post">
+              <input type="hidden" name="action" value="autoriser">
+              <input type="hidden" name="pubkey" value="{{ n.pubkey }}">
+              <button class="primaire" type="submit">Autoriser</button>
+            </form>
+            {% endif %}
+            {% if n.statut != 'refuse' %}
+            <form method="post">
+              <input type="hidden" name="action" value="refuser">
+              <input type="hidden" name="pubkey" value="{{ n.pubkey }}">
+              <button class="secondaire danger" type="submit">Refuser</button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

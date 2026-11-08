@@ -19,6 +19,7 @@ Environment=MESHIA_ADVERT_FLOOD=7200
 Environment=MESHIA_FLOOD_REGION=fr-42
 Environment=MESHIA_SERIAL_PAUSE=20
 Environment=MESHIA_SERIAL_ESSAIS=2
+Environment=MESHIA_NOEUDS=/opt/meshia/noeuds.db
 Restart=on-failure
 RestartSec=30
 StandardOutput=journal

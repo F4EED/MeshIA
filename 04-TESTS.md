@@ -103,6 +103,7 @@ Cocher dans le TODO :
 - [x] radio plusieurs MATCH → liste de titres puis 2e MP
 - [x] adverts local 1 h / flood 2 h si `fr-42`
 - [x] série sans boucle DTR (`serial.lock`, 2 essais)
+- [x] nœud inconnu → « Inscription en attente. » + page admin `/meshia/noeuds`
 
 Étapes 7 (Ollama) et 8 (systemd) : faites. Portail `meshia-web.service` : fait.
 

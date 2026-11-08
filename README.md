@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.17 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.18 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -42,7 +42,7 @@ Copie de travail Windows : `C:\Apps\meshia`. Sur le ThinkCentre, le service tour
 - **Nœud** : Seeed XIAO ESP32-S3 + Wio-SX1262, firmware Companion Radio USB. Il transporte uniquement les messages privés.
 - **ThinkCentre** : `ingest.py` reconstruit FTS5 ; `meshia.py` (un seul `/dev/ttyACM0`) répond en MP, envoie les adverts, sans boucle DTR.
 - **Portail web** : Flask + Waitress `127.0.0.1:8765`, Apache `ProxyPass /meshia`. Rôles utilisateur / rédacteur / administrateur. Recherche : **toutes** les fiches MATCH. Import URL : aperçu puis Créer.
-- **Radio** : un MATCH → la fiche (130 o). Plusieurs → liste de titres puis 2e MP = le titre. `aide` / `zzzz` inchangés.
+- **Radio** : nœud **autorisé** seulement. Un MATCH → la fiche (130 o). Plusieurs → liste de titres puis 2e MP = le titre. `aide` / `zzzz` inchangés. Inconnu → « Inscription en attente. ». Refusé → « Accès refusé. » une fois, puis silence.
 - **Fiches** : **65** dans git ; **66+** sur le ThinkCentre (tests portail, etc.). Titre = mot-clé ; l’essentiel dans ~120 caractères.
 
 ## Matériel et machine
@@ -70,6 +70,7 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 - **Recherche web** : toutes les fiches MATCH (pas LIMIT 1).
 - **Radio** : si plusieurs MATCH, liste de titres puis 2e MP = le titre.
 - **Série** : verrou `serial.lock`, 2 essais, pause 20 s, pas de boucle DTR ; USB 5 s = dernier recours.
+- **Nœuds** : liste d’attente admin. Inconnu enregistré dans `noeuds.db` (hors git, chmod 600). Page [Nœuds](http://192.168.1.57/meshia/noeuds) : Autoriser / Refuser. Pas visible rédacteur/utilisateur. Adverts inchangés.
 
 ## Prérequis
 
@@ -93,6 +94,8 @@ Sur le ThinkCentre, sous `/opt/meshia` :
   ingest.py
   meshia.py
   meshia.db       # généré par ingest.py (non versionné)
+  noeuds.db       # liste d’attente MeshCore (chmod 600, hors git)
+  noeuds.py
   web/            # portail Flask, conf Apache, unité meshia-web
     users.json    # hashes de mots de passe, chmod 600, hors git
     secret.key    # secret de session, chmod 600, hors git
@@ -135,6 +138,7 @@ Saisie portail : `Blackout énergie`, `Blackout télécom`. Un mot-clé commun (
 | `MESHIA_WEB_PORT` | `8765` | port local proxifié par Apache `/meshia` |
 | `MESHIA_WEB_USERS` | `/opt/meshia/web/users.json` | identifiants hashés (chmod 600, hors git) |
 | `MESHIA_WEB_SECRET` | `/opt/meshia/web/secret.key` | secret de session Flask (chmod 600, hors git) |
+| `MESHIA_NOEUDS` | `/opt/meshia/noeuds.db` | nœuds attente / autorisés / refusés (chmod 600, hors git) |
 
 ## Indexer et lancer
 
@@ -170,9 +174,11 @@ L’unité a `Restart=on-failure`, `RestartSec=30` et `StartLimitBurst=3` / 10 m
 
 Depuis un **autre** nœud, message privé à `FR42-Meshia` :
 
-1. `aide` — liste des sujets.
+0. Nœud **inconnu** — MeshIA n’exécute pas la question ; MP « Inscription en attente. » ; le nœud apparaît sur [Nœuds](http://192.168.1.57/meshia/noeuds) (admin). Autoriser, puis renvoyer la question.
+1. Nœud **autorisé** : `aide` — liste des sujets.
 2. Une question libre — **un** MATCH : la fiche (130 octets, éventuellement reformulée). **Plusieurs** (ex. `blackout`) : un MP court « Plusieurs : Blackout énergie, Blackout télécom. Lequel transférer ? » ; le 2e MP = ce titre → une fiche.
 3. `zzzz` — « Rien trouvé. Sujets : … ».
+4. Nœud **refusé** — un MP « Accès refusé. » une fois, puis silence.
 
 ### Advert (même process série)
 
@@ -199,13 +205,15 @@ python web/init_users.py meshia    # mot de passe sur stdin, une ligne
 
 **Rôles** (hashes + rôle dans `web/users.json`, chmod 600, hors git) :
 
-| Profil | Recherche | Saisir / importer / URL | Comptes |
-|---|---|---|---|
-| **utilisateur** | oui | non (403) | non (403) |
-| **rédacteur** | oui | oui | non (403) |
-| **administrateur** | oui | oui | oui |
+| Profil | Recherche | Saisir / importer / URL | Nœuds | Comptes |
+|---|---|---|---|---|
+| **utilisateur** | oui | non (403) | non (403) | non (403) |
+| **rédacteur** | oui | oui | non (403) | non (403) |
+| **administrateur** | oui | oui | oui | oui |
 
 Le compte `meshia` reste **administrateur** (rôle non rétrogradable, compte non supprimable). Les menus ne montrent que les pages autorisées ; une URL directe hors rôle renvoie **403**.
+
+**Nœuds** (administrateurs) : [http://192.168.1.57/meshia/noeuds](http://192.168.1.57/meshia/noeuds) — attente / autorisés / refusés, boutons Autoriser et Refuser.
 
 **Utilisateurs** (administrateurs) : [http://192.168.1.57/meshia/utilisateurs](http://192.168.1.57/meshia/utilisateurs) — lister, créer (avec profil), changer mot de passe, changer le profil, supprimer. Jamais les mots de passe en clair.
 
@@ -227,7 +235,7 @@ Apache : copier `web/apache-meshia.conf` vers `/etc/apache2/conf-available/meshi
 3. **Firmware** : seul **Companion Radio USB** parle sur le série. Room Server, Repeater et Companion BLE ne répondent pas.
 4. **`dmesg`** exige `sudo` sur Debian.
 5. **Payload MeshCore** ~130–150 octets : réponses découpées (`MESHIA_MAXLEN` / `MESHIA_MAXPARTS` / `MESHIA_PAUSE`). Si un message est refusé, baisser `MESHIA_MAXLEN` (ex. 110) ; si les parties se perdent, augmenter `MESHIA_PAUSE` (ex. 6).
-6. **Secrets du portail** : `web/users.json` et `web/secret.key` hors git, `chmod 600`. Ne pas les coller dans le README.
+6. **Secrets du portail** : `web/users.json`, `web/secret.key` et `noeuds.db` hors git, `chmod 600`. Ne pas les coller dans le README.
 
 ## Documentation
 

@@ -6,8 +6,9 @@ Le fichier **vivant** est `meshia.py` à la racine du dépôt. Le listing plus b
 
 Un seul process sur `/dev/ttyACM0` (`meshia.service`). MP MeshCore, FTS5, adverts, pas de second script série.
 
-## Comportement (1.17)
+## Comportement (1.18)
 
+- ACL nœuds (`noeuds.db`, chmod 600, hors git) **avant** toute question : inconnu → MP « Inscription en attente. » ; autorisé → flux ci-dessous ; refusé → « Accès refusé. » une fois, puis silence. Admin : `/meshia/noeuds`.
 - `aide` / `?` / `help` / `liste` : liste des sujets. `zzzz` : « Rien trouvé. Sujets : … ».
 - Un MATCH : la fiche (Ollama si `MESHIA_LLM=1`, sinon brut), découpée 130 o / 3 parts / pause 4 s.
 - Plusieurs MATCH : un MP « Plusieurs : Titre A, Titre B. Lequel transférer ? » ; le 2e MP = le titre exact → cette fiche.

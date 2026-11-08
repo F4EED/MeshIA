@@ -33,11 +33,11 @@ Ce dossier contient tout ce qu'il faut pour recréer le socle MeshIA (étapes 5 
   - `web/` : portail Flask (`users.json` / `secret.key` hors git, chmod 600).
 - **Nœud radio** : Seeed Studio XIAO ESP32-S3 avec module Wio-SX1262, firmware **Companion Radio USB**, nom du nœud `FR42-Meshia`, port série `/dev/ttyACM0`.
 
-## État d'avancement (1.17 — 8 nov. 2026)
+## État d'avancement (1.18 — 8 nov. 2026)
 
 - Étapes 1 à 8 faites. `meshia.service` + `meshia-web.service`. Ollama optionnel (`MESHIA_LLM=1`).
-- **65** fiches git, **66+** sur le ThinkCentre. Portail : rôles, recherche multi-MATCH, import URL. Radio : choix de titre si plusieurs MATCH. Adverts local 1 h / flood 2 h si `fr-42`. Série : pas de boucle DTR.
-- Code de vérité : `meshia.py`, `ingest.py`, `web/` dans le dépôt — pas les listings historiques des specs 01–02.
+- **65** fiches git, **66+** sur le ThinkCentre. Portail : rôles, recherche multi-MATCH, import URL, page admin **Nœuds**. Radio : nœud autorisé seulement (inconnu → inscription en attente). Adverts local 1 h / flood 2 h si `fr-42`. Série : pas de boucle DTR.
+- Code de vérité : `meshia.py`, `noeuds.py`, `ingest.py`, `web/` dans le dépôt — pas les listings historiques des specs 01–02.
 
 ## Pièges connus (à rappeler à l'IA)
 

@@ -1,5 +1,6 @@
 import asyncio, json, logging, os, re, sqlite3, sys, unicodedata, urllib.error, urllib.request
 from meshcore import MeshCore, EventType
+from noeuds import decision_mp, marquer_refuse_notifie
 
 PORT = os.environ.get("MESHIA_SERIAL", "/dev/ttyACM0")
 DB = os.environ.get("MESHIA_DB", "/opt/meshia/meshia.db")
@@ -334,7 +335,6 @@ async def main():
         prefix = p.get("pubkey_prefix")
         if not question:
             return
-        log.info("Question de %s : %s", prefix, question)
 
         contact = mc.get_contact_by_key_prefix(prefix)
         if contact is None:
@@ -344,8 +344,29 @@ async def main():
             except Exception as e:
                 log.warning("Rafraîchissement des contacts : %s", e)
             contact = mc.get_contact_by_key_prefix(prefix)
+
+        try:
+            action, texte_acl, ident, nom, pref = decision_mp(contact, prefix)
+        except Exception as e:
+            log.warning("ACL nœuds : %s", e)
+            action, texte_acl, ident, nom, pref = "attente", "Inscription en attente.", prefix, prefix, prefix
+        log.info("Question de %s (%s) : %s [%s]", nom, (ident or prefix or "")[:16], question, action)
+
+        if action != "ok":
+            if action == "silence":
+                return
+            if contact is None:
+                log.warning("ACL %s sans contact, pas de MP (%s)", action, ident)
+                return
+            async with radio:
+                await mc.commands.send_msg(contact, texte_acl)
+            log.info("ACL %s envoyé à %s : %s", action, nom, texte_acl)
+            if action == "refus":
+                marquer_refuse_notifie(ident, pref)
+            return
+
         if contact is None:
-            log.warning("Contact inconnu (%s), pas de réponse", prefix)
+            log.warning("Contact introuvable (%s), pas de réponse", prefix)
             return
 
         parts = parts_pour_question(question)

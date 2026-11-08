@@ -186,6 +186,7 @@
     <a href="{{ url_for('depuis_url') }}" class="{{ 'actif' if actif == 'url' else '' }}">URL</a>
     {% endif %}
     {% if peut_admin %}
+    <a href="{{ url_for('noeuds') }}" class="{{ 'actif' if actif == 'noeuds' else '' }}">Nœuds</a>
     <a href="{{ url_for('utilisateurs') }}" class="{{ 'actif' if actif == 'utilisateurs' else '' }}">Utilisateurs</a>
     {% endif %}
     <span class="spacer"></span>

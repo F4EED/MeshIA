@@ -11,6 +11,7 @@ WorkingDirectory=/opt/meshia
 ExecStart=/opt/meshia/.venv/bin/python /opt/meshia/web/app.py
 Environment=MESHIA_ROOT=/opt/meshia
 Environment=MESHIA_DB=/opt/meshia/meshia.db
+Environment=MESHIA_NOEUDS=/opt/meshia/noeuds.db
 Environment=MESHIA_WEB_BIND=127.0.0.1
 Environment=MESHIA_WEB_PORT=8765
 Environment=PYTHONUNBUFFERED=1

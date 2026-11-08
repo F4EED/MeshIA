@@ -4,7 +4,7 @@
 <div class="card">
   <h2>Accès refusé (403)</h2>
   <p>Cette page n’est pas disponible avec le profil <strong>{{ role_label or "inconnu" }}</strong>.</p>
-  <p class="aide">Utilisateur : recherche seulement. Rédacteur : fiches. Administrateur : comptes.</p>
+  <p class="aide">Utilisateur : recherche seulement. Rédacteur : fiches. Administrateur : nœuds et comptes.</p>
   <p><a href="{{ url_for('recherche') }}">Retour à la recherche</a></p>
 </div>
 {% endblock %}

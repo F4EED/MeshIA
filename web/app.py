@@ -39,6 +39,8 @@ sys.path.insert(0, str(WEB))
 from extract import ALLOWED_EXT, ExtractError, extraire_texte  # noqa: E402
 from fetch_url import FetchError, fetch_fiche  # noqa: E402
 from meshia import chercher_tous, lister_titres  # noqa: E402
+from noeuds import LABELS as NOEUD_LABELS  # noqa: E402
+from noeuds import par_statut, set_statut  # noqa: E402
 
 FICHES = ROOT / "fiches"
 INGEST = ROOT / "ingest.py"
@@ -496,6 +498,28 @@ def utilisateurs():
             flash(str(e), "err")
     comptes = [{"nom": n, "role": users[n]["role"]} for n in sorted(users.keys())]
     return render_template("utilisateurs.html", comptes=comptes)
+
+
+@app.route("/meshia/noeuds", methods=["GET", "POST"])
+@role_min("administrateur")
+def noeuds():
+    if request.method == "POST":
+        action = (request.form.get("action") or "").strip()
+        pubkey = (request.form.get("pubkey") or "").strip()
+        try:
+            if action == "autoriser":
+                set_statut(pubkey, "autorise")
+                flash("Nœud autorisé. Le prochain MP suit le flux habituel.", "ok")
+            elif action == "refuser":
+                set_statut(pubkey, "refuse")
+                flash("Nœud refusé. Un MP « Accès refusé. » sera envoyé une fois.", "ok")
+            else:
+                raise ValueError("Action inconnue.")
+            return redirect(url_for("noeuds"))
+        except (ValueError, OSError, sqlite3.Error) as e:
+            flash(str(e), "err")
+    groupes = par_statut()
+    return render_template("noeuds.html", groupes=groupes, labels=NOEUD_LABELS)
 
 
 if __name__ == "__main__":
