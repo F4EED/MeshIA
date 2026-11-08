@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.12 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.14 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -119,6 +119,11 @@ Saisie portail : `Blackout énergie`, `Blackout télécom`. Un mot-clé commun (
 | `MESHIA_MAXLEN` | `130` | taille max d’un message, en octets UTF-8 |
 | `MESHIA_MAXPARTS` | `3` | nombre max de messages par réponse |
 | `MESHIA_PAUSE` | `4` | secondes entre deux parties |
+| `MESHIA_ADVERT_LOCAL` | `3600` | intervalle (s) d’un advert local (`send_advert`, sans flood) |
+| `MESHIA_ADVERT_FLOOD` | `7200` | intervalle (s) d’un advert flood, seulement si région `fr-42` |
+| `MESHIA_FLOOD_REGION` | `fr-42` | tag de région exigé pour le flood |
+| `MESHIA_SERIAL_PAUSE` | `20` | secondes d’attente si `create_serial` renvoie None, avant **un** retry |
+| `MESHIA_SERIAL_ESSAIS` | `2` | ouvertures max par lancement (pas de boucle DTR) |
 | `MESHIA_WEB_BIND` | `127.0.0.1` | écoute du portail Flask (localhost seulement) |
 | `MESHIA_WEB_PORT` | `8765` | port local proxifié par Apache `/meshia` |
 | `MESHIA_WEB_USERS` | `/opt/meshia/web/users.json` | identifiants hashés (chmod 600, hors git) |
@@ -152,7 +157,7 @@ sudo systemctl stop meshia     # libère le port
 sudo systemctl start meshia    # une seule ouverture
 ```
 
-L’unité a `Restart=on-failure` et `StartLimitBurst=1` : pas de relance en rafale si le nœud USB meurt. Dans ce cas : `systemctl stop meshia`, débrancher l’USB 5 s, rebrancher 5 s, puis `start` une fois.
+L’unité a `Restart=on-failure`, `RestartSec=30` et `StartLimitBurst=3` / 10 min. `meshia.py` n’ouvre ACM0 qu’une fois par essai (verrou `serial.lock`) : si `create_serial` est None, pause 20 s, **un** retry, puis arrêt propre (pas de boucle DTR toutes les 10 s). systemd peut relancer après 30 s. **Dernier recours** (manuel, pas d’auto-unplug) : `systemctl stop meshia`, débrancher l’USB 5 s, rebrancher 5 s, `start` **une** fois. Ne pas lancer `python meshia.py` tant que l’unité tourne.
 
 ### Tests radio
 
@@ -162,34 +167,11 @@ Depuis un **autre** nœud, message privé à `FR42-Meshia` :
 2. Une question libre (ex. `brûlure`, `comment potabiliser l'eau`) — meilleure fiche, éventuellement reformulée.
 3. `zzzz` — « Rien trouvé. Sujets : … ».
 
-### Advert flood
+### Advert (même process série)
 
-Si `FR42-Meshia` n’apparaît pas : **un seul process série**. Arrêter systemd, envoyer un advert en flood, relancer.
+Après `MeshIA prête`, `meshia.py` envoie un advert **local** (`send_advert()`, meshcore 2.3.17) toutes les **1 h**, et un advert **flood** (`send_advert(flood=True)`) toutes les **2 h** seulement si le nœud est tagué **fr-42**. La région est lue par `get_default_flood_scope()` (`scope_name`, Companion) ; CLI `region` / `region home` si le firmware le supporte (sinon `ERR_CODE_UNSUPPORTED_CMD`, logué). Sinon : skip + log. Un seul `/dev/ttyACM0` : ne pas lancer un second script advert.
 
-```bash
-sudo systemctl stop meshia
-cd /opt/meshia && source .venv/bin/activate
-```
-
-Coller ce script avec `nano` (pas un heredoc indenté), l’exécuter, puis le supprimer :
-
-```python
-import asyncio
-from meshcore import MeshCore
-
-async def main():
-    mc = await MeshCore.create_serial("/dev/ttyACM0")
-    print(await mc.commands.send_advert(flood=True))
-    await mc.disconnect()
-
-asyncio.run(main())
-```
-
-```bash
-sudo systemctl start meshia
-```
-
-Résultat attendu : événement `command_ok`. Relancer systemd **une seule fois**.
+Logs attendus : `Advert local (command_ok)` ; `Advert flood (command_ok)` ou `Advert flood ignoré : région … tag fr-42 absent`.
 
 ## Portail web (LAN)
 

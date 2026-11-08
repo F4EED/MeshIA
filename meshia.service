@@ -2,8 +2,8 @@
 Description=MeshIA MeshCore private reply service
 After=network.target ollama.service
 Wants=ollama.service
-StartLimitIntervalSec=5min
-StartLimitBurst=1
+StartLimitIntervalSec=10min
+StartLimitBurst=3
 
 [Service]
 Type=simple
@@ -14,8 +14,13 @@ WorkingDirectory=/opt/meshia
 ExecStart=/opt/meshia/.venv/bin/python /opt/meshia/meshia.py
 Environment=MESHIA_LLM=1
 Environment=MESHIA_MODEL=qwen2.5:0.5b
+Environment=MESHIA_ADVERT_LOCAL=3600
+Environment=MESHIA_ADVERT_FLOOD=7200
+Environment=MESHIA_FLOOD_REGION=fr-42
+Environment=MESHIA_SERIAL_PAUSE=20
+Environment=MESHIA_SERIAL_ESSAIS=2
 Restart=on-failure
-RestartSec=15
+RestartSec=30
 StandardOutput=journal
 StandardError=journal
 DeviceAllow=/dev/ttyACM0 rw

@@ -7,5 +7,6 @@ web/users.json
 web/secret.key
 web/uploads/
 web/ingest.lock
+serial.lock
 *.swp
 *~
