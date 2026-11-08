@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.15 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.16 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -64,6 +64,7 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 - **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active**.
 - **Étape 7** : faite. Ollama local `qwen2.5:0.5b`, `MESHIA_LLM=1` (défini dans l’unité systemd) reformule la fiche FTS5, avec fallback texte brut si Ollama est down. RAG = FTS5 ; embeddings plus tard.
 - **Portail web** : fait. `http://192.168.1.57/meshia` (LAN, login/mot de passe). Unité `meshia-web.service` distincte : ne touche ni `meshia.service`, ni `/dev/ttyACM0`, ni Ollama.
+- **Adverts** : faits. Local 1 h, flood 2 h si région `fr-42` (`get_default_flood_scope`), même process série.
 
 ## Prérequis
 
@@ -170,9 +171,9 @@ Depuis un **autre** nœud, message privé à `FR42-Meshia` :
 
 ### Advert (même process série)
 
-Après `MeshIA prête`, `meshia.py` envoie un advert **local** (`send_advert()`, meshcore 2.3.17) toutes les **1 h**, et un advert **flood** (`send_advert(flood=True)`) toutes les **2 h** seulement si le nœud est tagué **fr-42**. La région est lue par `get_default_flood_scope()` (`scope_name`, Companion) ; CLI `region` / `region home` si le firmware le supporte (sinon `ERR_CODE_UNSUPPORTED_CMD`, logué). Sinon : skip + log. Un seul `/dev/ttyACM0` : ne pas lancer un second script advert.
+Après `MeshIA prête`, le **même** process `meshia.py` envoie un advert **local** (`send_advert()`, meshcore 2.3.17) toutes les **1 h**, et un advert **flood** (`send_advert(flood=True)`) toutes les **2 h** seulement si `get_default_flood_scope()` (`scope_name`) contient **fr-42**. Premier envoi ~15 s après le démarrage, puis les intervalles. CLI `region` non supporté sur le Companion (`ERR_CODE_UNSUPPORTED_CMD`) : on utilise le flood_scope. Sinon : skip + log. Pas de second process série.
 
-Logs attendus : `Advert local (command_ok)` ; `Advert flood (command_ok)` ou `Advert flood ignoré : région … tag fr-42 absent`.
+Logs constatés sur FR42-Meshia : `Advert local (command_ok)` ; `Région (flood_scope) : fr-42` ; `Advert flood (command_ok)`.
 
 ## Portail web (LAN)
 
