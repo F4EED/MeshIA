@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.14 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.15 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -104,7 +104,7 @@ Unités systemd : `/etc/systemd/system/meshia.service` (radio) et `meshia-web.se
 
 Dernier parcours mesh : 16 fiches — MeshCore, Companion, Repeater, Regions, EUNarrow, Flasher, DutyCycle, Hop, ClientMute, Router, LongFast, Channel, MeshtasticApp, MeshtasticFlash, LoRaWAN, XIAO. Ignorés : accueil, hubs vides, comparateur/catalogues, contact, tuto induction, internals firmware DeepWiki, fiche `meshtastic.md` retirée.
 
-Saisie portail : `Blackout énergie`, `Blackout télécom`. Un mot-clé commun (`blackout`) matche les deux en FTS5 ; le portail les affiche toutes, la radio uniquement la meilleure.
+Saisie portail : `Blackout énergie`, `Blackout télécom`. Un mot-clé commun (`blackout`) matche les deux en FTS5 ; le portail les affiche toutes. Radio : liste des titres puis 2e MP = le titre choisi.
 
 ## Variables d’environnement
 
@@ -118,6 +118,7 @@ Saisie portail : `Blackout énergie`, `Blackout télécom`. Un mot-clé commun (
 | `MESHIA_LLM_TIMEOUT` | `45` | secondes avant fallback fiche brute |
 | `MESHIA_MAXLEN` | `130` | taille max d’un message, en octets UTF-8 |
 | `MESHIA_MAXPARTS` | `3` | nombre max de messages par réponse |
+| `MESHIA_MATCH_MAX` | `3` | titres proposés si plusieurs fiches MATCH |
 | `MESHIA_PAUSE` | `4` | secondes entre deux parties |
 | `MESHIA_ADVERT_LOCAL` | `3600` | intervalle (s) d’un advert local (`send_advert`, sans flood) |
 | `MESHIA_ADVERT_FLOOD` | `7200` | intervalle (s) d’un advert flood, seulement si région `fr-42` |
@@ -164,7 +165,7 @@ L’unité a `Restart=on-failure`, `RestartSec=30` et `StartLimitBurst=3` / 10 m
 Depuis un **autre** nœud, message privé à `FR42-Meshia` :
 
 1. `aide` — liste des sujets.
-2. Une question libre (ex. `brûlure`, `comment potabiliser l'eau`) — meilleure fiche, éventuellement reformulée.
+2. Une question libre — **un** MATCH : la fiche (130 octets, éventuellement reformulée). **Plusieurs** (ex. `blackout`) : un MP court « Plusieurs : Blackout énergie, Blackout télécom. Lequel transférer ? » ; le 2e MP = ce titre → une fiche.
 3. `zzzz` — « Rien trouvé. Sujets : … ».
 
 ### Advert (même process série)

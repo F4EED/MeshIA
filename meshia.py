@@ -1,4 +1,4 @@
-import asyncio, json, logging, os, re, sqlite3, sys, urllib.error, urllib.request
+import asyncio, json, logging, os, re, sqlite3, sys, unicodedata, urllib.error, urllib.request
 from meshcore import MeshCore, EventType
 
 PORT = os.environ.get("MESHIA_SERIAL", "/dev/ttyACM0")
@@ -10,6 +10,7 @@ LLM_TIMEOUT = float(os.environ.get("MESHIA_LLM_TIMEOUT", "45"))
 MAX_OCTETS = int(os.environ.get("MESHIA_MAXLEN", "130"))
 MAX_PARTS = int(os.environ.get("MESHIA_MAXPARTS", "3"))
 PAUSE = float(os.environ.get("MESHIA_PAUSE", "4"))
+MATCH_RADIO_MAX = max(1, int(os.environ.get("MESHIA_MATCH_MAX", "3")))
 ADVERT_LOCAL_S = float(os.environ.get("MESHIA_ADVERT_LOCAL", "3600"))
 ADVERT_FLOOD_S = float(os.environ.get("MESHIA_ADVERT_FLOOD", "7200"))
 ADVERT_PREMIER_S = float(os.environ.get("MESHIA_ADVERT_PREMIER", "15"))
@@ -251,17 +252,72 @@ async def ouvrir_noeud():
     raise SystemExit(1)
 
 
-def construire_reponse(question):
+def _norm(s):
+    s = unicodedata.normalize("NFKD", s or "")
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return " ".join(s.casefold().split())
+
+
+def fiche_par_titre_exact(q):
+    nq = _norm(q)
+    if not nq:
+        return None
+    hits = []
+    con = sqlite3.connect(DB)
+    try:
+        for titre, contenu in con.execute("SELECT titre, contenu FROM fiches"):
+            if _norm(titre) == nq:
+                hits.append((titre, contenu))
+    finally:
+        con.close()
+    return hits[0] if len(hits) == 1 else None
+
+
+def liste_choix_titres(titres):
+    prefix, suffix = "Plusieurs : ", ". Lequel transférer ?"
+    reserve = len(prefix.encode()) + len(suffix.encode())
+    choisis = []
+    for t in titres:
+        essai = ", ".join(choisis + [t])
+        if len(essai.encode()) + reserve <= MAX_OCTETS:
+            choisis.append(t)
+        elif not choisis:
+            coupe = t.encode()[: max(8, MAX_OCTETS - reserve - 1)].decode("utf-8", "ignore")
+            choisis.append(coupe.rstrip() + "…")
+            break
+        else:
+            break
+    return prefix + ", ".join(choisis) + suffix
+
+
+def parts_pour_question(question):
+    """Radio : 1 MATCH → fiche ; plusieurs → liste de titres ; 2e MP = le titre."""
     q = question.strip()
     if q.lower() in ("aide", "?", "help", "liste"):
         titres = lister_titres()
-        return "Sujets : " + ", ".join(titres) if titres else "Aucune fiche."
-    trouve = chercher(q)
-    if trouve is None:
+        texte = "Sujets : " + ", ".join(titres) if titres else "Aucune fiche."
+        return decouper(texte, MAX_OCTETS, MAX_PARTS)
+    exact = fiche_par_titre_exact(q)
+    if exact:
+        titre, contenu = exact
+        return decouper(reformuler(q, titre, contenu), MAX_OCTETS, MAX_PARTS)
+    trouves = chercher_tous(q, limite=MATCH_RADIO_MAX)
+    if not trouves:
         titres = lister_titres()
-        return "Rien trouvé. Sujets : " + ", ".join(titres[:15])
-    titre, contenu = trouve
-    return reformuler(q, titre, contenu)
+        return decouper(
+            "Rien trouvé. Sujets : " + ", ".join(titres[:15]),
+            MAX_OCTETS,
+            MAX_PARTS,
+        )
+    if len(trouves) == 1:
+        titre, contenu = trouves[0]
+        return decouper(reformuler(q, titre, contenu), MAX_OCTETS, MAX_PARTS)
+    choix = liste_choix_titres([t for t, _ in trouves])
+    return decouper(choix, MAX_OCTETS, 1)
+
+
+def construire_reponse(question):
+    return " ".join(parts_pour_question(question))
 
 
 async def main():
@@ -292,8 +348,7 @@ async def main():
             log.warning("Contact inconnu (%s), pas de réponse", prefix)
             return
 
-        reponse = construire_reponse(question)
-        parts = decouper(reponse, MAX_OCTETS, MAX_PARTS)
+        parts = parts_pour_question(question)
         for i, part in enumerate(parts):
             async with radio:
                 await mc.commands.send_msg(contact, part)
