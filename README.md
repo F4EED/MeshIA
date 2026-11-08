@@ -2,6 +2,8 @@
 
 Service de réponses **privées MeshCore** : une question envoyée en message privé au nœud `FR42-Meshia` est rapprochée de fiches Markdown indexées dans **SQLite FTS5**. Un LLM local (**Ollama**) est prévu plus tard, en option.
 
+Dépôt : [github.com/F4EED/MeshIA](https://github.com/F4EED/MeshIA) — **public**, licence [MIT](LICENSE).
+
 ## Architecture
 
 ```
@@ -16,8 +18,8 @@ Service de réponses **privées MeshCore** : une question envoyée en message pr
 ```
 
 - **Nœud** : Seeed XIAO ESP32-S3 + Wio-SX1262, firmware Companion Radio USB. Il transporte uniquement les messages privés.
-- **ThinkCentre** : exécute le service Python. `ingest.py` (à poser) lit les fiches et reconstruit la base. `meshia.py` (à poser) écoute le port série, cherche la meilleure fiche et répond, découpé en messages courts.
-- **Fiches** : un fichier Markdown par sujet dans `fiches/`. Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
+- **ThinkCentre** : exécute le service Python. `ingest.py` lit les fiches et reconstruit la base. `meshia.py` écoute le port série, cherche la meilleure fiche et répond, découpé en messages courts.
+- **Fiches** : 36 fichiers Markdown dans `fiches/` (5 exemples + extraits du wiki [wiki-resilience-pi](https://github.com/brunodesannicolas/wiki-resilience-pi)). Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
 
 ## Matériel et machine
 
@@ -34,10 +36,9 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 
 ## État d’avancement
 
-- **Étapes 1 à 4** : faites (Debian, sudo, config de base, nœud MeshCore prêt).
-- **Étape 5** : `fiches/`, venv, paquet `meshcore` ; connexion série et messages validés avec un script de test.
-- **Reste (étape 6)** : poser `ingest.py`, `meshia.py` et les fiches, puis dérouler les tests. **Ne pas les créer tant que ce n’est pas demandé.**
-- **Ensuite** : étape 7 (LLM Ollama, optionnel), étape 8 (service systemd 24/7).
+- **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
+- **Étape 6** : faite. `ingest.py`, `meshia.py` et **36 fiches** sont en place. `meshia.py` répond en message privé MeshCore (`MESHIA_LLM=0`).
+- **Reste** : étape 8 (service systemd 24/7). Étape 7 (LLM Ollama) optionnelle, **pas encore branchée**.
 
 ## Prérequis
 
@@ -55,11 +56,13 @@ Sur le ThinkCentre, sous `/opt/meshia` :
 ```
 /opt/meshia/
   .venv/          # Python : meshcore, pyserial
-  fiches/         # un .md par sujet
-  ingest.py       # à créer (spec 01)
-  meshia.py       # à créer (spec 02)
+  fiches/         # 36 fichiers .md
+  ingest.py
+  meshia.py
   meshia.db       # généré par ingest.py
 ```
+
+Même arborescence (sans `.venv` ni `meshia.db`) dans ce dépôt.
 
 ## Variables d’environnement
 
@@ -74,7 +77,7 @@ Sur le ThinkCentre, sous `/opt/meshia` :
 
 ## Indexer et lancer
 
-Le code source complet et le format des fiches sont dans les specs [01](01-ingest.py.md), [02](02-meshia.py.md) et [03](03-fiches.md). Les coller avec `nano` (pas un heredoc indenté). Procédure de tests : [04](04-TESTS.md).
+Specs : [01](01-ingest.py.md), [02](02-meshia.py.md), [03](03-fiches.md), tests : [04](04-TESTS.md). Sur le ThinkCentre, créer ou coller un fichier avec `nano` (pas un heredoc indenté).
 
 Activer le venv, puis indexer (à relancer après chaque modification de fiche) :
 
@@ -84,7 +87,7 @@ python ingest.py fiches
 sqlite3 meshia.db "SELECT titre FROM fiches"
 ```
 
-Sortie attendue : `N fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
+Sortie attendue : `36 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
 
 Avant de lancer le service : aucun autre processus sur le port (`fuser -v /dev/ttyACM0`), USB débranché 5 s puis rebranché 5 s, `ls /dev/ttyACM*`. Un seul script, une seule ouverture.
 
