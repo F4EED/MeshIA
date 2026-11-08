@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% set actif = "utilisateurs" %}
+{% block title %}Utilisateurs — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Utilisateurs</h2>
+  <p class="aide">Comptes du portail (hashes dans <code>web/users.json</code>, chmod 600, hors git). Les mots de passe ne sont jamais affichés.</p>
+  <table>
+    <thead>
+      <tr><th>Identifiant</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for nom in noms %}
+      <tr>
+        <td><strong>{{ nom }}</strong>{% if nom == "meshia" %} <span class="aide">(admin)</span>{% endif %}</td>
+        <td>
+          <form method="post" style="margin:0">
+            <input type="hidden" name="action" value="mdp">
+            <input type="hidden" name="username" value="{{ nom }}">
+            <label for="mdp-{{ loop.index }}">Nouveau mot de passe</label>
+            <input id="mdp-{{ loop.index }}" name="password" type="password" required minlength="8" autocomplete="new-password">
+            <div class="actions">
+              <button class="primaire" type="submit">Changer le mot de passe</button>
+            </div>
+          </form>
+          {% if nom != "meshia" %}
+          <form method="post" onsubmit="return confirm('Supprimer le compte {{ nom }} ?');">
+            <input type="hidden" name="action" value="supprimer">
+            <input type="hidden" name="username" value="{{ nom }}">
+            <button class="secondaire danger" type="submit">Supprimer</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card" style="margin-top:1rem">
+  <h2>Créer un compte</h2>
+  <form method="post">
+    <input type="hidden" name="action" value="creer">
+    <label for="username">Identifiant</label>
+    <input id="username" name="username" type="text" required minlength="2" maxlength="32" autocomplete="off" placeholder="ex. alice">
+    <label for="password">Mot de passe</label>
+    <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password">
+    <button class="primaire" type="submit">Créer</button>
+  </form>
+</div>
+{% endblock %}

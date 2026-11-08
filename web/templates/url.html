@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% set actif = "url" %}
+{% block title %}Fiche depuis une URL — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Fiche depuis une URL</h2>
+  <p class="aide">Collez une adresse <strong>http</strong> ou <strong>https</strong> (pas de <code>file://</code>). MeshIA récupère le texte (HTML → texte, ou txt/md), propose un titre, et n’écrit <strong>rien</strong> tant que vous n’avez pas cliqué sur Créer.</p>
+
+  <form method="post">
+    <input type="hidden" name="action" value="apercu">
+    <label for="url">URL</label>
+    <input id="url" name="url" type="url" required placeholder="https://…" value="{{ url or (brouillon.source if brouillon else '') }}">
+    <button class="primaire" type="submit">Récupérer l’aperçu</button>
+  </form>
+</div>
+
+{% if brouillon and brouillon.titre is defined %}
+<div class="card" style="margin-top:1rem">
+  <h2>Fiche proposée</h2>
+  <p class="aide">Vérifiez le titre et le texte. Rien n’est enregistré dans <code>fiches/</code> et <code>ingest.py</code> n’est pas lancé tant que vous n’avez pas confirmé.</p>
+  {% if brouillon.source %}<p class="aide">Source : {{ brouillon.source }}</p>{% endif %}
+  {% if brouillon.tronque %}<p class="aide">Le texte a été tronqué (limite 8000 caractères).</p>{% endif %}
+  <form method="post">
+    <label for="titre">Titre</label>
+    <input id="titre" name="titre" type="text" required maxlength="120" value="{{ brouillon.titre }}">
+    <label for="texte">Texte</label>
+    <textarea id="texte" name="texte" required>{{ brouillon.texte }}</textarea>
+    <button class="primaire" type="submit" name="action" value="creer">Créer la fiche</button>
+  </form>
+  <form method="post">
+    <button class="secondaire" type="submit" name="action" value="annuler">Annuler</button>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

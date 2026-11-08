@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.6 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.7 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -203,7 +203,11 @@ python web/init_users.py meshia    # mot de passe sur stdin, une ligne
 
 **Importer** un fichier `txt`, `md`, `pdf`, `doc` ou `docx` : extraction du texte, même pipeline. Les `.doc` anciens sont en best-effort.
 
-**Recherche** : même FTS5 `meshia.db` et même logique que `meshia.py` (`MATCH`, accents ignorés, bm25, `aide` / « Rien trouvé »). Affiche le texte brut de la fiche qui partirait à la radio (sans Ollama).
+**URL** : [http://192.168.1.57/meshia/url](http://192.168.1.57/meshia/url) — coller une adresse http(s) (pas de `file://`). MeshIA affiche d’abord la **fiche proposée** (titre + texte). Rien n’est écrit tant qu’on n’a pas cliqué sur **Créer** (`fiches/*.md` + `ingest.py`). Timeout 15 s, max 1 Mo.
+
+**Utilisateurs** (compte `meshia`) : [http://192.168.1.57/meshia/utilisateurs](http://192.168.1.57/meshia/utilisateurs) — lister, créer, changer un mot de passe, supprimer. Hashes uniquement, jamais les mots de passe en clair. Le compte `meshia` ne peut pas être supprimé.
+
+**Recherche** : [http://192.168.1.57/meshia/recherche](http://192.168.1.57/meshia/recherche) — même FTS5 `meshia.db` et même logique que `meshia.py` (`MATCH`, accents ignorés, bm25, `aide` / « Rien trouvé »). La fiche (titre + texte brut, sans Ollama) s’affiche **sous le champ**, encadrée. Si FTS5 ne trouve rien : « Rien trouvé. Sujets : … » (jamais une page vide). Exemple : `?q=radio`.
 
 Service web (ne pas confondre avec `meshia.service` radio) :
 

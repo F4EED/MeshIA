@@ -17,6 +17,8 @@
       --err-bg: #ffe4e6;
       --ok: #166534;
       --ok-bg: #dcfce7;
+      --fiche: #fffbeb;
+      --fiche-line: #d97706;
     }
     * { box-sizing: border-box; }
     body {
@@ -53,7 +55,8 @@
       cursor: pointer;
     }
     nav a.actif { background: var(--accent); color: #fff; border-color: var(--accent); }
-    nav form { margin: 0 0 0 auto; }
+    nav form { margin: 0; }
+    nav .spacer { flex: 1; }
     main { max-width: 42rem; margin: 0 auto; padding: 1rem; }
     .card {
       background: var(--card);
@@ -62,13 +65,14 @@
       padding: 1rem;
     }
     label { display: block; font-weight: 600; margin: 0.8rem 0 0.3rem; }
-    input[type=text], input[type=password], input[type=file], textarea {
+    input[type=text], input[type=password], input[type=url], input[type=file], textarea {
       width: 100%;
       font: inherit;
       padding: 0.65rem 0.7rem;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
+      color: var(--ink);
     }
     textarea { min-height: 11rem; resize: vertical; }
     button.primaire, input[type=submit] {
@@ -84,20 +88,57 @@
       font-weight: 650;
       cursor: pointer;
     }
+    button.secondaire {
+      display: inline-block;
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      cursor: pointer;
+    }
+    button.danger { background: var(--err); color: #fff; border: 0; }
     .flash { list-style: none; margin: 0 0 1rem; padding: 0; }
     .flash li { padding: 0.65rem 0.75rem; border-radius: 8px; margin-bottom: 0.4rem; }
     .flash .ok { background: var(--ok-bg); color: var(--ok); }
     .flash .err { background: var(--err-bg); color: var(--err); }
     .aide { color: var(--muted); font-size: 0.92rem; }
-    pre.resultat {
+    .fiche {
+      margin: 1rem 0 0;
+      padding: 1rem;
+      background: var(--fiche);
+      border: 2px solid var(--fiche-line);
+      border-radius: 12px;
+      color: var(--ink);
+    }
+    .fiche.vide {
+      background: var(--err-bg);
+      border-color: var(--err);
+    }
+    .fiche .badge {
+      margin: 0 0 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #92400e;
+    }
+    .fiche.vide .badge { color: var(--err); }
+    .fiche h3 { margin: 0 0 0.5rem; font-size: 1.25rem; color: var(--ink); }
+    .fiche .corps {
+      margin: 0;
       white-space: pre-wrap;
       word-break: break-word;
-      background: #1c1917;
-      color: #f5f5f4;
-      padding: 0.9rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
+      color: var(--ink);
     }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.45rem 0.3rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .actions button { margin-top: 0; width: auto; padding: 0.4rem 0.7rem; }
     footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 1.2rem; }
   </style>
 </head>
@@ -111,6 +152,11 @@
     <a href="{{ url_for('recherche') }}" class="{{ 'actif' if actif == 'recherche' else '' }}">Recherche</a>
     <a href="{{ url_for('saisir') }}" class="{{ 'actif' if actif == 'saisir' else '' }}">Saisir</a>
     <a href="{{ url_for('importer') }}" class="{{ 'actif' if actif == 'importer' else '' }}">Importer</a>
+    <a href="{{ url_for('depuis_url') }}" class="{{ 'actif' if actif == 'url' else '' }}">URL</a>
+    {% if est_admin %}
+    <a href="{{ url_for('utilisateurs') }}" class="{{ 'actif' if actif == 'utilisateurs' else '' }}">Utilisateurs</a>
+    {% endif %}
+    <span class="spacer"></span>
     <form method="post" action="{{ url_for('logout') }}">
       <button type="submit">Déconnexion ({{ session.user }})</button>
     </form>

@@ -4,7 +4,7 @@
 {% block body %}
 <div class="card">
   <h2>Importer un document</h2>
-  <p class="aide">Formats : <strong>txt, md, pdf, doc, docx</strong>. Le texte est extrait, écrit en Markdown, puis indexé comme une fiche. Les .doc anciens sont en best-effort (catdoc / antiword / LibreOffice).</p>
+  <p class="aide">Formats : <strong>txt, md, pdf, doc, docx</strong>. Le texte est extrait, écrit en Markdown, puis indexé comme une fiche. Les .doc anciens sont en best-effort (catdoc / antiword / LibreOffice). Pour une page web : <a href="{{ url_for('depuis_url') }}">importer depuis une URL</a> (aperçu, puis confirmation).</p>
   <form method="post" enctype="multipart/form-data">
     <label for="fichier">Fichier</label>
     <input id="fichier" name="fichier" type="file" required accept=".txt,.md,.pdf,.doc,.docx,text/plain,text/markdown,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">

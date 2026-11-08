@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import sqlite3
+import stat
 import subprocess
 import sys
 import tempfile
@@ -21,7 +23,7 @@ from flask import (
     session,
     url_for,
 )
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 ROOT = Path(os.environ.get("MESHIA_ROOT", "/opt/meshia"))
@@ -33,6 +35,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(WEB))
 
 from extract import ALLOWED_EXT, ExtractError, extraire_texte  # noqa: E402
+from fetch_url import FetchError, fetch_fiche  # noqa: E402
 from meshia import chercher, lister_titres  # noqa: E402
 
 FICHES = ROOT / "fiches"
@@ -43,6 +46,8 @@ SECRET_FILE = Path(os.environ.get("MESHIA_WEB_SECRET", str(WEB / "secret.key")))
 LOCK_FILE = WEB / "ingest.lock"
 BIND = os.environ.get("MESHIA_WEB_BIND", "127.0.0.1")
 PORT = int(os.environ.get("MESHIA_WEB_PORT", "8765"))
+ADMINS = {"meshia"}
+USER_RE = re.compile(r"^[A-Za-z0-9._-]{2,32}$")
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
@@ -74,6 +79,15 @@ def _users() -> dict:
     return data if isinstance(data, dict) else {}
 
 
+def _sauver_users(data: dict) -> None:
+    WEB.mkdir(parents=True, exist_ok=True)
+    tmp = USERS_FILE.with_name(USERS_FILE.name + ".tmp")
+    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.chmod(tmp, stat.S_IRUSR | stat.S_IWUSR)
+    tmp.replace(USERS_FILE)
+    os.chmod(USERS_FILE, stat.S_IRUSR | stat.S_IWUSR)
+
+
 def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
@@ -85,11 +99,29 @@ def login_required(view):
     return wrapped
 
 
+def admin_required(view):
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if not session.get("user"):
+            return redirect(url_for("login", next=request.path))
+        if session.get("user") not in ADMINS:
+            flash("Cette page est réservée au compte meshia.", "err")
+            return redirect(url_for("recherche"))
+        return view(*args, **kwargs)
+
+    return wrapped
+
+
+@app.context_processor
+def _nav():
+    return {"est_admin": session.get("user") in ADMINS}
+
+
 def titre_safe(titre: str) -> str:
     s = unicodedata.normalize("NFKD", titre)
     s = "".join(c for c in s if not unicodedata.combining(c))
     s = re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower()
-    return (s[:80] or "fiche")
+    return s[:80] or "fiche"
 
 
 def ecrire_fiche(titre: str, texte: str) -> Path:
@@ -130,18 +162,28 @@ def indexer() -> str:
     return (r.stdout or "").strip() or "indexation terminee"
 
 
-def reponse_radio(question: str) -> str:
-    """Meme logique que meshia.construire_reponse, sans Ollama (fiche brute)."""
+def rechercher_fiche(question: str) -> dict:
+    """Meme logique FTS5 que meshia.py, sans Ollama. Toujours un texte a afficher."""
     q = question.strip()
     if q.lower() in ("aide", "?", "help", "liste"):
         titres = lister_titres()
-        return "Sujets : " + ", ".join(titres) if titres else "Aucune fiche."
-    trouve = chercher(q)
+        contenu = "Sujets : " + ", ".join(titres) if titres else "Aucune fiche."
+        return {"vide": False, "aide": True, "titre": "Aide", "contenu": contenu}
+    try:
+        trouve = chercher(q)
+    except sqlite3.Error as e:
+        return {"vide": True, "aide": False, "titre": None, "contenu": f"Erreur de recherche : {e}"}
     if trouve is None:
         titres = lister_titres()
-        return "Rien trouvé. Sujets : " + ", ".join(titres[:15])
+        sujets = ", ".join(titres[:15]) if titres else "(aucune fiche indexée)"
+        return {
+            "vide": True,
+            "aide": False,
+            "titre": None,
+            "contenu": f"Rien trouvé. Sujets : {sujets}",
+        }
     titre, contenu = trouve
-    return f"{titre} : {contenu}"
+    return {"vide": False, "aide": False, "titre": titre, "contenu": contenu or ""}
 
 
 @app.route("/meshia/login", methods=["GET", "POST"])
@@ -234,18 +276,110 @@ def importer():
     return render_template("importer.html")
 
 
+@app.route("/meshia/url", methods=["GET", "POST"])
+@login_required
+def depuis_url():
+    brouillon = session.get("brouillon_url") if isinstance(session.get("brouillon_url"), dict) else None
+    if request.method == "POST":
+        action = (request.form.get("action") or "apercu").strip()
+        if action == "annuler":
+            session.pop("brouillon_url", None)
+            flash("Brouillon annulé. Rien n’a été enregistré.", "ok")
+            return redirect(url_for("depuis_url"))
+        if action == "creer":
+            if not session.get("brouillon_url"):
+                flash("Aucun aperçu en cours. Récupérez d’abord l’URL.", "err")
+                return redirect(url_for("depuis_url"))
+            titre = request.form.get("titre") or ""
+            texte = request.form.get("texte") or ""
+            try:
+                dest = ecrire_fiche(titre, texte)
+                msg = indexer()
+                session.pop("brouillon_url", None)
+                flash(f"Fiche créée : {dest.name}. {msg}", "ok")
+                return redirect(url_for("depuis_url"))
+            except (ValueError, RuntimeError, OSError) as e:
+                flash(str(e), "err")
+                brouillon = {
+                    "source": (session.get("brouillon_url") or {}).get("source", ""),
+                    "titre": titre,
+                    "texte": texte,
+                }
+                return render_template("url.html", brouillon=brouillon)
+        try:
+            fiche = fetch_fiche(request.form.get("url") or "")
+        except FetchError as e:
+            flash(str(e), "err")
+            return render_template("url.html", brouillon=None, url=request.form.get("url") or "")
+        session["brouillon_url"] = {
+            "source": fiche["source"],
+            "titre": fiche["titre"],
+            "texte": fiche["texte"],
+            "tronque": fiche.get("tronque", False),
+        }
+        return render_template("url.html", brouillon=fiche)
+    return render_template("url.html", brouillon=brouillon if brouillon and brouillon.get("titre") else None)
+
+
 @app.route("/meshia/recherche", methods=["GET", "POST"])
 @login_required
 def recherche():
-    question = ""
-    resultat = None
     if request.method == "POST":
         question = (request.form.get("q") or "").strip()
-        if not question:
-            flash("Saisissez une question ou un mot-clé.", "err")
-        else:
-            resultat = reponse_radio(question)
+    else:
+        question = (request.args.get("q") or "").strip()
+    resultat = None
+    if question:
+        resultat = rechercher_fiche(question)
+    elif request.method == "POST":
+        flash("Saisissez une question ou un mot-clé.", "err")
     return render_template("recherche.html", question=question, resultat=resultat)
+
+
+@app.route("/meshia/utilisateurs", methods=["GET", "POST"])
+@admin_required
+def utilisateurs():
+    users = _users()
+    if request.method == "POST":
+        action = (request.form.get("action") or "").strip()
+        nom = (request.form.get("username") or "").strip()
+        mot = request.form.get("password") or ""
+        try:
+            if action == "creer":
+                if not USER_RE.match(nom):
+                    raise ValueError("Identifiant : 2 à 32 caractères (lettres, chiffres, . _ -).")
+                if nom in users:
+                    raise ValueError(f"Le compte {nom} existe déjà.")
+                if len(mot) < 8:
+                    raise ValueError("Mot de passe : 8 caractères minimum.")
+                users[nom] = generate_password_hash(mot, method="scrypt")
+                _sauver_users(users)
+                flash(f"Compte {nom} créé.", "ok")
+            elif action == "mdp":
+                if nom not in users:
+                    raise ValueError("Compte introuvable.")
+                if len(mot) < 8:
+                    raise ValueError("Mot de passe : 8 caractères minimum.")
+                users[nom] = generate_password_hash(mot, method="scrypt")
+                _sauver_users(users)
+                flash(f"Mot de passe de {nom} mis à jour.", "ok")
+            elif action == "supprimer":
+                if nom == "meshia":
+                    raise ValueError("Le compte meshia ne peut pas être supprimé.")
+                if nom == session.get("user"):
+                    raise ValueError("Vous ne pouvez pas supprimer le compte connecté.")
+                if nom not in users:
+                    raise ValueError("Compte introuvable.")
+                del users[nom]
+                _sauver_users(users)
+                flash(f"Compte {nom} supprimé.", "ok")
+            else:
+                raise ValueError("Action inconnue.")
+            return redirect(url_for("utilisateurs"))
+        except (ValueError, OSError) as e:
+            flash(str(e), "err")
+    noms = sorted(users.keys())
+    return render_template("utilisateurs.html", noms=noms)
 
 
 if __name__ == "__main__":
