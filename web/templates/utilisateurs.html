@@ -4,29 +4,48 @@
 {% block body %}
 <div class="card">
   <h2>Utilisateurs</h2>
-  <p class="aide">Comptes du portail (hashes dans <code>web/users.json</code>, chmod 600, hors git). Les mots de passe ne sont jamais affichés.</p>
+  <p class="aide">Comptes du portail (hashes dans <code>web/users.json</code>, chmod 600, hors git). Les mots de passe ne sont jamais affichés. Profils : utilisateur (recherche), rédacteur (fiches), administrateur (comptes). Le compte <code>meshia</code> reste administrateur.</p>
   <table>
     <thead>
-      <tr><th>Identifiant</th><th>Actions</th></tr>
+      <tr><th>Identifiant</th><th>Profil</th><th>Actions</th></tr>
     </thead>
     <tbody>
-      {% for nom in noms %}
+      {% for c in comptes %}
       <tr>
-        <td><strong>{{ nom }}</strong>{% if nom == "meshia" %} <span class="aide">(admin)</span>{% endif %}</td>
+        <td><strong>{{ c.nom }}</strong></td>
+        <td>
+          <form method="post">
+            <input type="hidden" name="action" value="role">
+            <input type="hidden" name="username" value="{{ c.nom }}">
+            <label for="role-{{ loop.index }}">Profil</label>
+            <select id="role-{{ loop.index }}" name="role" {% if c.nom == "meshia" %}disabled{% endif %}>
+              {% for r in roles %}
+              <option value="{{ r }}" {% if c.role == r %}selected{% endif %}>{{ role_labels[r] }}</option>
+              {% endfor %}
+            </select>
+            {% if c.nom != "meshia" %}
+            <div class="actions">
+              <button class="primaire" type="submit">Changer le profil</button>
+            </div>
+            {% else %}
+            <p class="aide">Administrateur (non modifiable)</p>
+            {% endif %}
+          </form>
+        </td>
         <td>
           <form method="post" style="margin:0">
             <input type="hidden" name="action" value="mdp">
-            <input type="hidden" name="username" value="{{ nom }}">
+            <input type="hidden" name="username" value="{{ c.nom }}">
             <label for="mdp-{{ loop.index }}">Nouveau mot de passe</label>
             <input id="mdp-{{ loop.index }}" name="password" type="password" required minlength="8" autocomplete="new-password">
             <div class="actions">
               <button class="primaire" type="submit">Changer le mot de passe</button>
             </div>
           </form>
-          {% if nom != "meshia" %}
-          <form method="post" onsubmit="return confirm('Supprimer le compte {{ nom }} ?');">
+          {% if c.nom != "meshia" %}
+          <form method="post" onsubmit="return confirm('Supprimer le compte {{ c.nom }} ?');">
             <input type="hidden" name="action" value="supprimer">
-            <input type="hidden" name="username" value="{{ nom }}">
+            <input type="hidden" name="username" value="{{ c.nom }}">
             <button class="secondaire danger" type="submit">Supprimer</button>
           </form>
           {% endif %}
@@ -43,6 +62,12 @@
     <input type="hidden" name="action" value="creer">
     <label for="username">Identifiant</label>
     <input id="username" name="username" type="text" required minlength="2" maxlength="32" autocomplete="off" placeholder="ex. alice">
+    <label for="role">Profil</label>
+    <select id="role" name="role">
+      <option value="utilisateur" selected>Utilisateur — recherche seulement</option>
+      <option value="redacteur">Rédacteur — recherche et fiches</option>
+      <option value="administrateur">Administrateur — tout + comptes</option>
+    </select>
     <label for="password">Mot de passe</label>
     <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password">
     <button class="primaire" type="submit">Créer</button>

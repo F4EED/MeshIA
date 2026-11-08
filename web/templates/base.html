@@ -65,7 +65,7 @@
       padding: 1rem;
     }
     label { display: block; font-weight: 600; margin: 0.8rem 0 0.3rem; }
-    input[type=text], input[type=password], input[type=url], input[type=file], textarea {
+    input[type=text], input[type=password], input[type=url], input[type=file], select, textarea {
       width: 100%;
       font: inherit;
       padding: 0.65rem 0.7rem;
@@ -150,15 +150,17 @@
   {% if session.get("user") %}
   <nav>
     <a href="{{ url_for('recherche') }}" class="{{ 'actif' if actif == 'recherche' else '' }}">Recherche</a>
+    {% if peut_rediger %}
     <a href="{{ url_for('saisir') }}" class="{{ 'actif' if actif == 'saisir' else '' }}">Saisir</a>
     <a href="{{ url_for('importer') }}" class="{{ 'actif' if actif == 'importer' else '' }}">Importer</a>
     <a href="{{ url_for('depuis_url') }}" class="{{ 'actif' if actif == 'url' else '' }}">URL</a>
-    {% if est_admin %}
+    {% endif %}
+    {% if peut_admin %}
     <a href="{{ url_for('utilisateurs') }}" class="{{ 'actif' if actif == 'utilisateurs' else '' }}">Utilisateurs</a>
     {% endif %}
     <span class="spacer"></span>
     <form method="post" action="{{ url_for('logout') }}">
-      <button type="submit">Déconnexion ({{ session.user }})</button>
+      <button type="submit">Déconnexion ({{ session.user }}{% if role_label %} · {{ role_label }}{% endif %})</button>
     </form>
   </nav>
   {% endif %}

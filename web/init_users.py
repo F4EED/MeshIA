@@ -49,9 +49,13 @@ def main() -> None:
         sys.exit(2)
 
     hashed = generate_password_hash(password, method="scrypt")
-    USERS.write_text(json.dumps({username: hashed}, indent=2) + "\n", encoding="utf-8")
+    role = "administrateur" if username == "meshia" else "utilisateur"
+    USERS.write_text(
+        json.dumps({username: {"hash": hashed, "role": role}}, indent=2) + "\n",
+        encoding="utf-8",
+    )
     _chmod600(USERS)
-    print(f"compte {username} cree dans {USERS}")
+    print(f"compte {username} ({role}) cree dans {USERS}")
 
 
 if __name__ == "__main__":

@@ -16,6 +16,7 @@ from pathlib import Path
 
 from flask import (
     Flask,
+    abort,
     flash,
     redirect,
     render_template,
@@ -46,7 +47,13 @@ SECRET_FILE = Path(os.environ.get("MESHIA_WEB_SECRET", str(WEB / "secret.key")))
 LOCK_FILE = WEB / "ingest.lock"
 BIND = os.environ.get("MESHIA_WEB_BIND", "127.0.0.1")
 PORT = int(os.environ.get("MESHIA_WEB_PORT", "8765"))
-ADMINS = {"meshia"}
+ROLES = ("utilisateur", "redacteur", "administrateur")
+NIVEAUX = {"utilisateur": 0, "redacteur": 1, "administrateur": 2}
+ROLE_LABELS = {
+    "utilisateur": "Utilisateur",
+    "redacteur": "Rédacteur",
+    "administrateur": "Administrateur",
+}
 USER_RE = re.compile(r"^[A-Za-z0-9._-]{2,32}$")
 
 app = Flask(__name__)
@@ -69,7 +76,28 @@ def _lire_secret() -> str:
 app.secret_key = _lire_secret()
 
 
-def _users() -> dict:
+def _role_valide(role: str, nom: str) -> str:
+    if nom == "meshia":
+        return "administrateur"
+    if role in ROLES:
+        return role
+    return "utilisateur"
+
+
+def _normaliser(data: dict) -> dict:
+    out = {}
+    for nom, val in data.items():
+        if not isinstance(nom, str) or not nom:
+            continue
+        if isinstance(val, str):
+            out[nom] = {"hash": val, "role": _role_valide("", nom)}
+        elif isinstance(val, dict):
+            hashed = val.get("hash") or val.get("password") or ""
+            out[nom] = {"hash": hashed, "role": _role_valide(val.get("role") or "", nom)}
+    return out
+
+
+def _users_brut() -> dict:
     if not USERS_FILE.is_file():
         return {}
     try:
@@ -79,19 +107,53 @@ def _users() -> dict:
     return data if isinstance(data, dict) else {}
 
 
+def _users() -> dict:
+    return _normaliser(_users_brut())
+
+
 def _sauver_users(data: dict) -> None:
     WEB.mkdir(parents=True, exist_ok=True)
+    norm = _normaliser(data)
     tmp = USERS_FILE.with_name(USERS_FILE.name + ".tmp")
-    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    tmp.write_text(json.dumps(norm, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     os.chmod(tmp, stat.S_IRUSR | stat.S_IWUSR)
     tmp.replace(USERS_FILE)
     os.chmod(USERS_FILE, stat.S_IRUSR | stat.S_IWUSR)
 
 
+def _migrer_si_besoin() -> None:
+    brut = _users_brut()
+    if not brut:
+        return
+    norm = _normaliser(brut)
+    if brut != norm:
+        _sauver_users(norm)
+
+
+def _compte(nom: str) -> dict | None:
+    return _users().get(nom)
+
+
+def role_de(nom: str | None) -> str | None:
+    if not nom:
+        return None
+    c = _compte(nom)
+    return c["role"] if c else None
+
+
+def role_courant() -> str | None:
+    return role_de(session.get("user"))
+
+
+def niveau_courant() -> int:
+    return NIVEAUX.get(role_courant() or "", -1)
+
+
 def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
-        if not session.get("user"):
+        if not session.get("user") or not _compte(session.get("user")):
+            session.clear()
             nxt = request.path if request.path.startswith("/meshia") else "/meshia/"
             return redirect(url_for("login", next=nxt))
         return view(*args, **kwargs)
@@ -99,22 +161,39 @@ def login_required(view):
     return wrapped
 
 
-def admin_required(view):
-    @wraps(view)
-    def wrapped(*args, **kwargs):
-        if not session.get("user"):
-            return redirect(url_for("login", next=request.path))
-        if session.get("user") not in ADMINS:
-            flash("Cette page est réservée au compte meshia.", "err")
-            return redirect(url_for("recherche"))
-        return view(*args, **kwargs)
+def role_min(role: str):
+    besoin = NIVEAUX[role]
 
-    return wrapped
+    def deco(view):
+        @wraps(view)
+        @login_required
+        def wrapped(*args, **kwargs):
+            if niveau_courant() < besoin:
+                abort(403)
+            return view(*args, **kwargs)
+
+        return wrapped
+
+    return deco
+
+
+@app.errorhandler(403)
+def _interdit(_e):
+    return render_template("403.html", role=role_courant()), 403
 
 
 @app.context_processor
 def _nav():
-    return {"est_admin": session.get("user") in ADMINS}
+    role = role_courant()
+    n = NIVEAUX.get(role or "", -1)
+    return {
+        "role": role,
+        "role_label": ROLE_LABELS.get(role or "", ""),
+        "peut_rediger": n >= NIVEAUX["redacteur"],
+        "peut_admin": n >= NIVEAUX["administrateur"],
+        "role_labels": ROLE_LABELS,
+        "roles": ROLES,
+    }
 
 
 def titre_safe(titre: str) -> str:
@@ -188,13 +267,14 @@ def rechercher_fiche(question: str) -> dict:
 
 @app.route("/meshia/login", methods=["GET", "POST"])
 def login():
-    if session.get("user"):
+    if session.get("user") and _compte(session.get("user")):
         return redirect(url_for("recherche"))
     erreur = None
     if request.method == "POST":
         nom = (request.form.get("username") or "").strip()
         mot = request.form.get("password") or ""
-        hashed = _users().get(nom)
+        compte = _compte(nom)
+        hashed = (compte or {}).get("hash")
         if hashed and check_password_hash(hashed, mot):
             session.clear()
             session["user"] = nom
@@ -221,7 +301,7 @@ def accueil():
 
 
 @app.route("/meshia/saisir", methods=["GET", "POST"])
-@login_required
+@role_min("redacteur")
 def saisir():
     if request.method == "POST":
         titre = request.form.get("titre") or ""
@@ -237,7 +317,7 @@ def saisir():
 
 
 @app.route("/meshia/importer", methods=["GET", "POST"])
-@login_required
+@role_min("redacteur")
 def importer():
     if request.method == "POST":
         f = request.files.get("fichier")
@@ -277,7 +357,7 @@ def importer():
 
 
 @app.route("/meshia/url", methods=["GET", "POST"])
-@login_required
+@role_min("redacteur")
 def depuis_url():
     brouillon = session.get("brouillon_url") if isinstance(session.get("brouillon_url"), dict) else None
     if request.method == "POST":
@@ -337,13 +417,14 @@ def recherche():
 
 
 @app.route("/meshia/utilisateurs", methods=["GET", "POST"])
-@admin_required
+@role_min("administrateur")
 def utilisateurs():
     users = _users()
     if request.method == "POST":
         action = (request.form.get("action") or "").strip()
         nom = (request.form.get("username") or "").strip()
         mot = request.form.get("password") or ""
+        role = _role_valide((request.form.get("role") or "").strip(), nom)
         try:
             if action == "creer":
                 if not USER_RE.match(nom):
@@ -352,17 +433,25 @@ def utilisateurs():
                     raise ValueError(f"Le compte {nom} existe déjà.")
                 if len(mot) < 8:
                     raise ValueError("Mot de passe : 8 caractères minimum.")
-                users[nom] = generate_password_hash(mot, method="scrypt")
+                users[nom] = {"hash": generate_password_hash(mot, method="scrypt"), "role": role}
                 _sauver_users(users)
-                flash(f"Compte {nom} créé.", "ok")
+                flash(f"Compte {nom} créé ({ROLE_LABELS[role]}).", "ok")
             elif action == "mdp":
                 if nom not in users:
                     raise ValueError("Compte introuvable.")
                 if len(mot) < 8:
                     raise ValueError("Mot de passe : 8 caractères minimum.")
-                users[nom] = generate_password_hash(mot, method="scrypt")
+                users[nom]["hash"] = generate_password_hash(mot, method="scrypt")
                 _sauver_users(users)
                 flash(f"Mot de passe de {nom} mis à jour.", "ok")
+            elif action == "role":
+                if nom not in users:
+                    raise ValueError("Compte introuvable.")
+                if nom == "meshia" and role != "administrateur":
+                    raise ValueError("Le compte meshia reste administrateur.")
+                users[nom]["role"] = role
+                _sauver_users(users)
+                flash(f"Profil de {nom} : {ROLE_LABELS[role]}.", "ok")
             elif action == "supprimer":
                 if nom == "meshia":
                     raise ValueError("Le compte meshia ne peut pas être supprimé.")
@@ -378,14 +467,15 @@ def utilisateurs():
             return redirect(url_for("utilisateurs"))
         except (ValueError, OSError) as e:
             flash(str(e), "err")
-    noms = sorted(users.keys())
-    return render_template("utilisateurs.html", noms=noms)
+    comptes = [{"nom": n, "role": users[n]["role"]} for n in sorted(users.keys())]
+    return render_template("utilisateurs.html", comptes=comptes)
 
 
 if __name__ == "__main__":
     if not USERS_FILE.is_file():
         sys.stderr.write(f"Fichier utilisateurs manquant : {USERS_FILE}\n")
         sys.exit(1)
+    _migrer_si_besoin()
     try:
         from waitress import serve
 
