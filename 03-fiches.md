@@ -1,5 +1,7 @@
 # 03 — Les fiches Markdown
 
+Corpus git : **65** fichiers. ThinkCentre : **66+** (saisies portail). Radio : si plusieurs titres MATCH, MeshIA envoie la liste et attend le titre. Portail : affiche toutes les MATCH.
+
 ## Format
 
 Une fiche = un fichier `.md` dans `/opt/meshia/fiches/`, un seul sujet.

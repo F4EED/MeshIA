@@ -1,6 +1,6 @@
 # MeshIA
 
-**Version du document :** 1.16 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.17 — 8 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
@@ -40,9 +40,10 @@ Copie de travail Windows : `C:\Apps\meshia`. Sur le ThinkCentre, le service tour
 ```
 
 - **Nœud** : Seeed XIAO ESP32-S3 + Wio-SX1262, firmware Companion Radio USB. Il transporte uniquement les messages privés.
-- **ThinkCentre** : `ingest.py` lit les fiches et reconstruit la base ; `meshia.py` écoute le port série, cherche la meilleure fiche FTS5, reformule éventuellement via Ollama, et répond en messages courts.
-- **Portail web** : Flask dans le venv, `meshia-web.service`, Apache `ProxyPass /meshia` → `127.0.0.1:8765`. Auth locale, saisie/import de fiches, recherche FTS5 (toutes les fiches MATCH, sans Ollama). La radio ne renvoie que la meilleure.
-- **Fiches** : 65 fichiers Markdown dans `fiches/` (exemples + extraits wiki resilience, MeshCore Bretagne, Meshtastic). Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
+- **ThinkCentre** : `ingest.py` reconstruit FTS5 ; `meshia.py` (un seul `/dev/ttyACM0`) répond en MP, envoie les adverts, sans boucle DTR.
+- **Portail web** : Flask + Waitress `127.0.0.1:8765`, Apache `ProxyPass /meshia`. Rôles utilisateur / rédacteur / administrateur. Recherche : **toutes** les fiches MATCH. Import URL : aperçu puis Créer.
+- **Radio** : un MATCH → la fiche (130 o). Plusieurs → liste de titres puis 2e MP = le titre. `aide` / `zzzz` inchangés.
+- **Fiches** : **65** dans git ; **66+** sur le ThinkCentre (tests portail, etc.). Titre = mot-clé ; l’essentiel dans ~120 caractères.
 
 ## Matériel et machine
 
@@ -60,11 +61,15 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 ## État d’avancement
 
 - **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
-- **Étape 6** : faite. `ingest.py`, `meshia.py` et **65 fiches** indexées. Réponses en message privé MeshCore.
+- **Étape 6** : faite. `ingest.py`, `meshia.py`, **65** fiches git / **66+** sur la machine.
 - **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active**.
 - **Étape 7** : faite. Ollama local `qwen2.5:0.5b`, `MESHIA_LLM=1` (défini dans l’unité systemd) reformule la fiche FTS5, avec fallback texte brut si Ollama est down. RAG = FTS5 ; embeddings plus tard.
 - **Portail web** : fait. `http://192.168.1.57/meshia` (LAN, login/mot de passe). Unité `meshia-web.service` distincte : ne touche ni `meshia.service`, ni `/dev/ttyACM0`, ni Ollama.
 - **Adverts** : faits. Local 1 h, flood 2 h si région `fr-42` (`get_default_flood_scope`), même process série.
+- **Rôles portail** : utilisateur / rédacteur / administrateur (`users.json` hors git).
+- **Recherche web** : toutes les fiches MATCH (pas LIMIT 1).
+- **Radio** : si plusieurs MATCH, liste de titres puis 2e MP = le titre.
+- **Série** : verrou `serial.lock`, 2 essais, pause 20 s, pas de boucle DTR ; USB 5 s = dernier recours.
 
 ## Prérequis
 
@@ -84,7 +89,7 @@ Sur le ThinkCentre, sous `/opt/meshia` :
 ```
 /opt/meshia/
   .venv/          # Python : meshcore, pyserial, flask, waitress, python-docx (non versionné)
-  fiches/         # 65 fichiers .md
+  fiches/         # 65 .md en git (66+ en local ThinkCentre)
   ingest.py
   meshia.py
   meshia.db       # généré par ingest.py (non versionné)
@@ -97,7 +102,7 @@ Unités systemd : `/etc/systemd/system/meshia.service` (radio) et `meshia-web.se
 
 ## Fiches et sources wiki
 
-**65 fiches** indexées. Origine :
+**65 fiches** dans git (**66+** indexées sur le ThinkCentre). Origine :
 
 - 5 exemples de départ (`brulure`, `saignement`, `eau`, `radio`, `urgence`) ;
 - extraits du wiki [wiki-resilience-pi / wiki_pages](https://github.com/brunodesannicolas/wiki-resilience-pi/tree/main/wiki_pages) (**32 pages**, y compris les `start.txt`) ;
@@ -143,7 +148,7 @@ python ingest.py fiches
 sqlite3 meshia.db "SELECT titre FROM fiches"
 ```
 
-Sortie attendue : `65 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` ou `MATCH 'blackout*'` (les accents sont ignorés).
+Sortie attendue (clone git) : `65 fiches indexées` ; sur le ThinkCentre souvent **66+**. Vérifier FTS5 : `MATCH 'brulure*'` ou `MATCH 'blackout*'`.
 
 Le service 24/7 est **systemd**. Un seul process sur `/dev/ttyACM0` : ne pas lancer `python meshia.py` à la main tant que l’unité tourne.
 
@@ -204,7 +209,7 @@ Le compte `meshia` reste **administrateur** (rôle non rétrogradable, compte no
 
 **Utilisateurs** (administrateurs) : [http://192.168.1.57/meshia/utilisateurs](http://192.168.1.57/meshia/utilisateurs) — lister, créer (avec profil), changer mot de passe, changer le profil, supprimer. Jamais les mots de passe en clair.
 
-**Recherche** : [http://192.168.1.57/meshia/recherche](http://192.168.1.57/meshia/recherche) — formulaire GET (`?q=radio` visible dans l’URL). Après **Chercher**, un bandeau vert « Recherche envoyée » puis la fiche **juste en dessous** (titre + texte, cadre contrasté, sans Ollama). Si FTS5 ne trouve rien : « Rien trouvé. Sujets : … ». Forcer le rafraîchissement (Ctrl+F5) si une ancienne page reste en cache.
+**Recherche** : [http://192.168.1.57/meshia/recherche](http://192.168.1.57/meshia/recherche) — GET `?q=…`. Toutes les fiches FTS5 MATCH s’affichent (ex. `blackout` → Blackout énergie **et** Blackout télécom), sans Ollama. Login conserve `?q=` après connexion. Rien trouvé : « Rien trouvé. Sujets : … ». Ctrl+F5 si cache.
 
 Service web (ne pas confondre avec `meshia.service` radio) :
 

@@ -11,7 +11,7 @@ Lit tous les fichiers `*.md` d'un dossier (par défaut `fiches/`) et construit u
 - Tokenizer `unicode61 remove_diacritics 2` : « brulure » trouve « Brûlure ».
 - Colonnes : `titre`, `contenu`, `fichier` (non indexée).
 - Variable d'environnement : `MESHIA_DB` (chemin de la base, défaut `/opt/meshia/meshia.db`).
-- Sortie attendue : `N fiches indexées`.
+- Sortie attendue : `N fiches indexées` (git : 65 ; ThinkCentre souvent 66+). Le portail relance `ingest.py` après Créer.
 
 ## Création du fichier
 
@@ -66,4 +66,4 @@ sqlite3 meshia.db "SELECT titre FROM fiches WHERE fiches MATCH 'brulure*'"
 ```
 
 Si `sqlite3` n'est pas installé : `sudo apt install sqlite3`.
-Si l'erreur `no such module: fts5` apparaît : vérifier avec `python -c "import sqlite3; print(sqlite3.sqlite_version)"` ; FTS5 est normalement inclus dans le Python de Debian 12.
+Si l'erreur `no such module: fts5` apparaît : vérifier avec `python -c "import sqlite3; print(sqlite3.sqlite_version)"` ; FTS5 est normalement inclus dans le Python de Debian 13.

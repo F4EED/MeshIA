@@ -16,7 +16,7 @@ ls fiches               # au moins 3 fichiers .md
 python ingest.py fiches
 ```
 
-**Validé si** : la sortie est `N fiches indexées` avec N égal au nombre de fichiers dans `fiches/`.
+**Validé si** : la sortie est `N fiches indexées` avec N égal au nombre de `.md` dans `fiches/` (git : 65 ; ThinkCentre souvent 66+).
 **Sinon** : vérifier que les fiches sont en UTF-8 et que le dossier est bien `fiches/`.
 
 ## Test 2 — Recherche directe dans SQLite (sans le mesh)
@@ -42,13 +42,17 @@ Ne pas lancer de script de test intermédiaire : lancer directement `meshia.py` 
 
 ## Test 4 — Service lancé
 
+Si `meshia.service` tourne déjà : **ne pas** lancer `python meshia.py` (un seul ACM0). Utiliser `sudo systemctl status meshia` / `journalctl -u meshia -n 30`.
+
+Sinon, port libre, **un** lancement :
+
 ```bash
 MESHIA_LLM=0 python meshia.py
 ```
 
-**Validé si** : le log affiche `MeshIA prête sur /dev/ttyACM0 (LLM=False)` et le programme reste en attente.
+**Validé si** : `MeshIA prête sur /dev/ttyACM0` et pas de boucle « invert dtr » toutes les 10 s.
 **Sinon** :
-- Message « Connexion au nœud impossible » en boucle : retourner au Test 3 (rebranchement propre).
+- `create_serial` None après 2 essais : stop, USB 5 s, `start` **une** fois.
 - `AttributeError` ou `TypeError` sur une méthode `mc.` : demander à l'IA de vérifier la version de `meshcore` (`pip show meshcore`) et d'adapter l'appel.
 
 ## Test 5 — Question depuis un autre nœud
@@ -59,8 +63,9 @@ Depuis le téléphone (appli companion reliée à **un autre nœud** que celui d
 2. `brûlure` → réponse commençant par « Brûlure : Refroidir… ».
 3. `comment potabiliser l'eau` → réponse de la fiche « Eau potable ».
 4. `zzzz` → réponse « Rien trouvé. Sujets : … ».
+5. `blackout` → « Plusieurs : Blackout énergie, Blackout télécom. Lequel transférer ? » puis un 2e MP `Blackout télécom` → cette fiche.
 
-**Validé si** : les 4 réponses arrivent sur le téléphone, et le terminal du ThinkCentre affiche les lignes `Question de … :` et `Envoyé (1/N) :`.
+**Validé si** : les réponses arrivent, et le journal affiche `Question de … :` et `Envoyé (1/N) :`.
 
 **Sinon** :
 - Le téléphone ne voit pas `FR42-Meshia` : envoyer un « advert » depuis chaque côté pour que les nœuds se découvrent, puis réessayer.
@@ -91,13 +96,15 @@ Si les parties arrivent dans le désordre ou sont perdues, augmenter `MESHIA_PAU
 
 Cocher dans le TODO :
 
-- [ ] `python ingest.py fiches` → « N fiches indexées »
-- [ ] recherche SQLite directe OK
-- [ ] `MESHIA_LLM=0 python meshia.py` répond à une question depuis un autre nœud
-- [ ] temps de réponse mesuré
-- [ ] troncature réglée (valeurs de `MESHIA_MAXLEN` / `MESHIA_MAXPARTS` / `MESHIA_PAUSE` retenues)
+- [x] `python ingest.py fiches` → « N fiches indexées » (git 65 ; ThinkCentre 66+)
+- [x] recherche SQLite directe OK
+- [x] `meshia.service` répond depuis un autre nœud (ne pas lancer `python meshia.py` si l’unité tourne)
+- [x] troncature : `MESHIA_MAXLEN=130` / `MESHIA_MAXPARTS=3` / `MESHIA_PAUSE=4`
+- [x] radio plusieurs MATCH → liste de titres puis 2e MP
+- [x] adverts local 1 h / flood 2 h si `fr-42`
+- [x] série sans boucle DTR (`serial.lock`, 2 essais)
 
-Étape suivante : étape 7 (LLM local avec Ollama, optionnel) ou étape 8 (service systemd 24/7).
+Étapes 7 (Ollama) et 8 (systemd) : faites. Portail `meshia-web.service` : fait.
 
 ## Rappels
 

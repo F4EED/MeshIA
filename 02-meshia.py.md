@@ -1,17 +1,18 @@
 # 02 — `meshia.py` : le service qui répond sur le mesh
 
+Le fichier **vivant** est `meshia.py` à la racine du dépôt. Le listing plus bas est l’ébauche étape 6.
+
 ## Rôle
 
-Se connecte au nœud MeshCore (Companion USB) sur le port série, écoute les **messages privés** reçus, cherche la meilleure fiche dans SQLite et répond à l'expéditeur.
+Un seul process sur `/dev/ttyACM0` (`meshia.service`). MP MeshCore, FTS5, adverts, pas de second script série.
 
-## Comportement
+## Comportement (1.17)
 
-- Un message `aide`, `?`, `help` ou `liste` renvoie la liste des sujets disponibles.
-- Une question libre : les mots utiles sont extraits (mots de 3 lettres ou plus, sans mots vides), puis cherchés en FTS5 avec préfixes (`"mot"*`, séparés par `OR`). La meilleure fiche est choisie avec `bm25`, le titre pesant 5 fois plus que le contenu.
-- Si rien ne correspond : réponse « Rien trouvé. Sujets : … ».
-- **Limite de payload** : la réponse est découpée en parties de `MESHIA_MAXLEN` octets (UTF-8, sans couper un caractère, de préférence à un espace), en `MESHIA_MAXPARTS` messages au plus. Si le texte dépasse, la dernière partie se termine par « … ». Pause de `MESHIA_PAUSE` secondes entre les parties.
-- Si la connexion au nœud échoue, nouvel essai toutes les 10 secondes. Si le nœud se déconnecte en cours de route, le script s'arrête (systemd le relancera à l'étape 8).
-- `MESHIA_LLM` est lue mais **pas encore utilisée** (étape 7).
+- `aide` / `?` / `help` / `liste` : liste des sujets. `zzzz` : « Rien trouvé. Sujets : … ».
+- Un MATCH : la fiche (Ollama si `MESHIA_LLM=1`, sinon brut), découpée 130 o / 3 parts / pause 4 s.
+- Plusieurs MATCH : un MP « Plusieurs : Titre A, Titre B. Lequel transférer ? » ; le 2e MP = le titre exact → cette fiche.
+- Adverts (même process) : local `send_advert()` 1 h ; flood `send_advert(flood=True)` 2 h si `get_default_flood_scope()` contient `fr-42`.
+- Série : verrou `serial.lock` ; `create_serial` None → pause 20 s, **un** retry, puis exit (pas de boucle DTR 10 s). systemd `RestartSec=30`, `StartLimitBurst=3`. USB 5 s = dernier recours.
 
 ## Variables d'environnement
 
@@ -19,10 +20,16 @@ Se connecte au nœud MeshCore (Companion USB) sur le port série, écoute les **
 |---|---|---|
 | `MESHIA_SERIAL` | `/dev/ttyACM0` | port série du nœud |
 | `MESHIA_DB` | `/opt/meshia/meshia.db` | base SQLite |
-| `MESHIA_LLM` | `0` | `1` pour activer le LLM (étape 7, pas encore branché) |
+| `MESHIA_LLM` | `0` | `1` reformule la fiche (unité systemd force `1`) |
 | `MESHIA_MAXLEN` | `130` | taille max d'un message, en octets |
 | `MESHIA_MAXPARTS` | `3` | nombre max de messages par réponse |
+| `MESHIA_MATCH_MAX` | `3` | titres listés si plusieurs MATCH |
 | `MESHIA_PAUSE` | `4` | secondes entre deux parties |
+| `MESHIA_ADVERT_LOCAL` | `3600` | advert local, secondes |
+| `MESHIA_ADVERT_FLOOD` | `7200` | advert flood, secondes |
+| `MESHIA_FLOOD_REGION` | `fr-42` | tag requis pour le flood |
+| `MESHIA_SERIAL_PAUSE` | `20` | pause avant le retry série |
+| `MESHIA_SERIAL_ESSAIS` | `2` | ouvertures max par lancement |
 
 ## Création du fichier
 
@@ -33,7 +40,9 @@ nano meshia.py
 
 Coller le code ci-dessous, puis Ctrl+O, Entrée, Ctrl+X.
 
-## Code
+## Code (ébauche étape 6 — historique)
+
+Ne pas coller tel quel : le dépôt a le vrai `meshia.py` (choix de titres, adverts, verrou série, Ollama). Le listing ci-dessous reste LIMIT 1 et sans adverts.
 
 ```python
 import asyncio, logging, os, re, sqlite3
