@@ -38,13 +38,14 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 
 - **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
 - **Étape 6** : faite. `ingest.py`, `meshia.py` et **36 fiches** sont en place. `meshia.py` répond en message privé MeshCore (`MESHIA_LLM=0`).
-- **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active** (`MESHIA_LLM=0`).
-- **Reste** : étape 7 (LLM Ollama) optionnelle, **pas encore branchée**.
+- **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active**.
+- **Étape 7** : faite. Ollama local `qwen2.5:0.5b`, `MESHIA_LLM=1` reformule la fiche FTS5 (fallback texte brut si Ollama down).
 
 ## Prérequis
 
 - Python 3 du système Debian, `sqlite3` CLI (`sudo apt install sqlite3` si absent), FTS5 (inclus dans le SQLite de Debian).
 - Environnement virtuel `/opt/meshia/.venv` avec `meshcore` et `pyserial`.
+- Ollama (systemd `ollama.service`) et modèle `qwen2.5:0.5b` pour `MESHIA_LLM=1`.
 - Compte `meshia` dans le groupe `dialout`, nœud Companion USB branché sur `/dev/ttyACM0`.
 - Un **autre** nœud (téléphone / appli companion) pour poser les questions en privé.
 
@@ -71,7 +72,10 @@ Unité systemd : `/etc/systemd/system/meshia.service` (copie dans ce dépôt : `
 |---|---|---|
 | `MESHIA_SERIAL` | `/dev/ttyACM0` | port série du nœud |
 | `MESHIA_DB` | `/opt/meshia/meshia.db` | base SQLite FTS5 |
-| `MESHIA_LLM` | `0` | `1` pour le LLM (étape 7, **pas encore branché**) |
+| `MESHIA_LLM` | `0` | `1` pour reformuler la fiche via Ollama |
+| `MESHIA_MODEL` | `qwen2.5:0.5b` | modèle Ollama |
+| `MESHIA_OLLAMA` | `http://127.0.0.1:11434/api/generate` | API generate |
+| `MESHIA_LLM_TIMEOUT` | `45` | secondes avant fallback fiche brute |
 | `MESHIA_MAXLEN` | `130` | taille max d’un message, en octets UTF-8 |
 | `MESHIA_MAXPARTS` | `3` | nombre max de messages par réponse |
 | `MESHIA_PAUSE` | `4` | secondes entre deux parties |
@@ -97,7 +101,7 @@ sudo systemctl status meshia
 sudo journalctl -u meshia -n 50 --no-pager
 ```
 
-Log attendu : `MeshIA prête sur /dev/ttyACM0 (LLM=False)`.
+Log attendu : `MeshIA prête sur /dev/ttyACM0 (LLM=True)` (unité systemd avec `MESHIA_LLM=1`). La recherche reste du FTS5 ; le LLM ne reformule que la fiche trouvée.
 
 ```bash
 sudo systemctl stop meshia     # libère le port

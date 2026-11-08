@@ -1,6 +1,7 @@
 [Unit]
 Description=MeshIA MeshCore private reply service
-After=network.target
+After=network.target ollama.service
+Wants=ollama.service
 StartLimitIntervalSec=5min
 StartLimitBurst=1
 
@@ -11,7 +12,8 @@ Group=dialout
 SupplementaryGroups=dialout
 WorkingDirectory=/opt/meshia
 ExecStart=/opt/meshia/.venv/bin/python /opt/meshia/meshia.py
-Environment=MESHIA_LLM=0
+Environment=MESHIA_LLM=1
+Environment=MESHIA_MODEL=qwen2.5:0.5b
 Restart=on-failure
 RestartSec=15
 StandardOutput=journal

@@ -1,12 +1,15 @@
-import asyncio, logging, os, re, sqlite3
+import asyncio, json, logging, os, re, sqlite3, urllib.error, urllib.request
 from meshcore import MeshCore, EventType
 
 PORT = os.environ.get("MESHIA_SERIAL", "/dev/ttyACM0")
 DB = os.environ.get("MESHIA_DB", "/opt/meshia/meshia.db")
-LLM = os.environ.get("MESHIA_LLM", "0") == "1"          # étape 7, pas encore branché
-MAX_OCTETS = int(os.environ.get("MESHIA_MAXLEN", "130"))  # taille max d'un message
-MAX_PARTS = int(os.environ.get("MESHIA_MAXPARTS", "3"))   # nb max de messages par réponse
-PAUSE = float(os.environ.get("MESHIA_PAUSE", "4"))        # secondes entre deux parties
+LLM = os.environ.get("MESHIA_LLM", "0") == "1"
+LLM_MODEL = os.environ.get("MESHIA_MODEL", "qwen2.5:0.5b")
+LLM_URL = os.environ.get("MESHIA_OLLAMA", "http://127.0.0.1:11434/api/generate")
+LLM_TIMEOUT = float(os.environ.get("MESHIA_LLM_TIMEOUT", "45"))
+MAX_OCTETS = int(os.environ.get("MESHIA_MAXLEN", "130"))
+MAX_PARTS = int(os.environ.get("MESHIA_MAXPARTS", "3"))
+PAUSE = float(os.environ.get("MESHIA_PAUSE", "4"))
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("meshia")
@@ -64,6 +67,43 @@ def decouper(texte, limite, max_parts):
     return parts
 
 
+def reformuler(question, titre, contenu):
+    brut = f"{titre} : {contenu}"
+    if not LLM:
+        return brut
+    prompt = (
+        "Reformule UNIQUEMENT la fiche pour repondre a la question. "
+        "N'ajoute aucun fait absent de la fiche. "
+        "Francais, phrases courtes, sans liste ni emoji. "
+        "Maximum 350 caracteres.\n"
+        f"Question: {question}\n"
+        f"Fiche ({titre}): {contenu}\n"
+        "Reponse:"
+    )
+    body = json.dumps(
+        {
+            "model": LLM_MODEL,
+            "prompt": prompt,
+            "stream": False,
+            "options": {"temperature": 0.2, "num_predict": 160},
+        }
+    ).encode()
+    req = urllib.request.Request(
+        LLM_URL, data=body, headers={"Content-Type": "application/json"}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=LLM_TIMEOUT) as resp:
+            data = json.loads(resp.read().decode())
+        texte = (data.get("response") or "").strip()
+        if not texte:
+            log.warning("Ollama vide, fallback fiche")
+            return brut
+        return texte
+    except Exception as e:
+        log.warning("Ollama indisponible (%s), fallback fiche", e)
+        return brut
+
+
 def construire_reponse(question):
     q = question.strip()
     if q.lower() in ("aide", "?", "help", "liste"):
@@ -74,7 +114,7 @@ def construire_reponse(question):
         titres = lister_titres()
         return "Rien trouvé. Sujets : " + ", ".join(titres[:15])
     titre, contenu = trouve
-    return f"{titre} : {contenu}"
+    return reformuler(q, titre, contenu)
 
 
 async def main():
@@ -125,4 +165,5 @@ async def main():
     log.error("Nœud déconnecté, arrêt (systemd relancera le service)")
 
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
