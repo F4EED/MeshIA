@@ -19,7 +19,7 @@ Dépôt : [github.com/F4EED/MeshIA](https://github.com/F4EED/MeshIA) — **publi
 
 - **Nœud** : Seeed XIAO ESP32-S3 + Wio-SX1262, firmware Companion Radio USB. Il transporte uniquement les messages privés.
 - **ThinkCentre** : exécute le service Python. `ingest.py` lit les fiches et reconstruit la base. `meshia.py` écoute le port série, cherche la meilleure fiche et répond, découpé en messages courts.
-- **Fiches** : 36 fichiers Markdown dans `fiches/` (5 exemples + extraits du wiki [wiki-resilience-pi](https://github.com/brunodesannicolas/wiki-resilience-pi)). Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
+- **Fiches** : 47 fichiers Markdown dans `fiches/` (exemples + extraits du wiki [wiki-resilience-pi](https://github.com/brunodesannicolas/wiki-resilience-pi), y compris les `start.txt`). Titre = mot-clé tapé par l’utilisateur ; l’essentiel tient dans les ~120 premiers caractères.
 
 ## Matériel et machine
 
@@ -37,7 +37,7 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 ## État d’avancement
 
 - **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
-- **Étape 6** : faite. `ingest.py`, `meshia.py` et **36 fiches** sont en place. `meshia.py` répond en message privé MeshCore (`MESHIA_LLM=0`).
+- **Étape 6** : faite. `ingest.py`, `meshia.py` et **47 fiches** sont en place. `meshia.py` répond en message privé MeshCore (`MESHIA_LLM=0`).
 - **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active**.
 - **Étape 7** : faite. Ollama local `qwen2.5:0.5b`, `MESHIA_LLM=1` reformule la fiche FTS5 (fallback texte brut si Ollama down).
 
@@ -58,7 +58,7 @@ Sur le ThinkCentre, sous `/opt/meshia` :
 ```
 /opt/meshia/
   .venv/          # Python : meshcore, pyserial
-  fiches/         # 36 fichiers .md
+  fiches/         # 47 fichiers .md
   ingest.py
   meshia.py
   meshia.db       # généré par ingest.py
@@ -92,7 +92,7 @@ python ingest.py fiches
 sqlite3 meshia.db "SELECT titre FROM fiches"
 ```
 
-Sortie attendue : `36 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
+Sortie attendue : `47 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
 
 Le service 24/7 est **systemd**. Un seul process sur `/dev/ttyACM0` : ne pas lancer `python meshia.py` à la main tant que l’unité tourne.
 
