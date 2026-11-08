@@ -1,0 +1,22 @@
+[Unit]
+Description=MeshIA MeshCore private reply service
+After=network.target
+StartLimitIntervalSec=5min
+StartLimitBurst=1
+
+[Service]
+Type=simple
+User=meshia
+Group=dialout
+SupplementaryGroups=dialout
+WorkingDirectory=/opt/meshia
+ExecStart=/opt/meshia/.venv/bin/python /opt/meshia/meshia.py
+Environment=MESHIA_LLM=0
+Restart=on-failure
+RestartSec=15
+StandardOutput=journal
+StandardError=journal
+DeviceAllow=/dev/ttyACM0 rw
+
+[Install]
+WantedBy=multi-user.target

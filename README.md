@@ -38,7 +38,8 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 
 - **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
 - **Étape 6** : faite. `ingest.py`, `meshia.py` et **36 fiches** sont en place. `meshia.py` répond en message privé MeshCore (`MESHIA_LLM=0`).
-- **Reste** : étape 8 (service systemd 24/7). Étape 7 (LLM Ollama) optionnelle, **pas encore branchée**.
+- **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active** (`MESHIA_LLM=0`).
+- **Reste** : étape 7 (LLM Ollama) optionnelle, **pas encore branchée**.
 
 ## Prérequis
 
@@ -62,7 +63,7 @@ Sur le ThinkCentre, sous `/opt/meshia` :
   meshia.db       # généré par ingest.py
 ```
 
-Même arborescence (sans `.venv` ni `meshia.db`) dans ce dépôt.
+Unité systemd : `/etc/systemd/system/meshia.service` (copie dans ce dépôt : `meshia.service`). Même arborescence applicative (sans `.venv` ni `meshia.db`) dans ce dépôt.
 
 ## Variables d’environnement
 
@@ -89,13 +90,21 @@ sqlite3 meshia.db "SELECT titre FROM fiches"
 
 Sortie attendue : `36 fiches indexées`. Vérifier FTS5 sans le mesh, par exemple `MATCH 'brulure*'` (les accents sont ignorés).
 
-Avant de lancer le service : aucun autre processus sur le port (`fuser -v /dev/ttyACM0`), USB débranché 5 s puis rebranché 5 s, `ls /dev/ttyACM*`. Un seul script, une seule ouverture.
+Le service 24/7 est **systemd**. Un seul process sur `/dev/ttyACM0` : ne pas lancer `python meshia.py` à la main tant que l’unité tourne.
 
 ```bash
-MESHIA_LLM=0 python meshia.py
+sudo systemctl status meshia
+sudo journalctl -u meshia -n 50 --no-pager
 ```
 
-Log attendu : `MeshIA prête sur /dev/ttyACM0 (LLM=False)`. Ctrl+C arrête le processus.
+Log attendu : `MeshIA prête sur /dev/ttyACM0 (LLM=False)`.
+
+```bash
+sudo systemctl stop meshia     # libère le port
+sudo systemctl start meshia    # une seule ouverture
+```
+
+L’unité a `Restart=on-failure` et `StartLimitBurst=1` : pas de relance en rafale si le nœud USB meurt. Dans ce cas : `systemctl stop meshia`, débrancher l’USB 5 s, rebrancher 5 s, puis `start` une fois.
 
 Depuis un **autre** nœud, message privé à `FR42-Meshia` : `aide` (liste des sujets), une question libre (meilleure fiche), `zzzz` (« Rien trouvé. Sujets : … »). Si `FR42-Meshia` n’apparaît pas, envoyer un advert de chaque côté.
 
