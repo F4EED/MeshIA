@@ -15,17 +15,27 @@
   {% endif %}
 
   {% if resultat %}
-  <article id="resultat" class="reponse{% if resultat.vide %} vide{% endif %}">
     {% if resultat.vide %}
+  <article id="resultat" class="reponse vide">
       <p class="badge">Aucun résultat</p>
       <h3>Rien trouvé</h3>
       <p class="corps">{{ resultat.contenu }}</p>
-    {% else %}
-      <p class="badge">{% if resultat.aide %}Liste des sujets{% else %}Réponse (fiche radio){% endif %}</p>
+  </article>
+    {% elif resultat.aide %}
+  <article id="resultat" class="reponse">
+      <p class="badge">Liste des sujets</p>
       <h3>{{ resultat.titre }}</h3>
       <p class="corps">{{ resultat.contenu }}</p>
-    {% endif %}
   </article>
+    {% else %}
+      {% for f in resultat.fiches %}
+  <article {% if loop.first %}id="resultat"{% endif %} class="reponse"{% if not loop.last %} style="margin-bottom:0.8rem"{% endif %}>
+      <p class="badge">{% if resultat.fiches|length > 1 %}Fiche {{ loop.index }}/{{ resultat.fiches|length }}{% else %}Réponse (fiche radio){% endif %}</p>
+      <h3>{{ f.titre }}</h3>
+      <p class="corps">{{ f.contenu }}</p>
+  </article>
+      {% endfor %}
+    {% endif %}
   {% elif question %}
   <article id="resultat" class="reponse vide">
     <p class="badge">Pas de réponse</p>

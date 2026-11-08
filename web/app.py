@@ -38,7 +38,7 @@ sys.path.insert(0, str(WEB))
 
 from extract import ALLOWED_EXT, ExtractError, extraire_texte  # noqa: E402
 from fetch_url import FetchError, fetch_fiche  # noqa: E402
-from meshia import chercher, lister_titres  # noqa: E402
+from meshia import chercher_tous, lister_titres  # noqa: E402
 
 FICHES = ROOT / "fiches"
 INGEST = ROOT / "ingest.py"
@@ -157,7 +157,11 @@ def login_required(view):
     def wrapped(*args, **kwargs):
         if not session.get("user") or not _compte(session.get("user")):
             session.clear()
-            nxt = request.path if request.path.startswith("/meshia") else "/meshia/"
+            nxt = request.full_path
+            if nxt.endswith("?"):
+                nxt = nxt[:-1]
+            if not nxt.startswith("/meshia"):
+                nxt = "/meshia/"
             return redirect(url_for("login", next=nxt))
         return view(*args, **kwargs)
 
@@ -252,10 +256,10 @@ def rechercher_fiche(question: str) -> dict:
         contenu = "Sujets : " + ", ".join(titres) if titres else "Aucune fiche."
         return {"vide": False, "aide": True, "titre": "Aide", "contenu": contenu}
     try:
-        trouve = chercher(q)
+        trouves = chercher_tous(q)
     except sqlite3.Error as e:
-        return {"vide": True, "aide": False, "titre": None, "contenu": f"Erreur de recherche : {e}"}
-    if trouve is None:
+        return {"vide": True, "aide": False, "titre": None, "contenu": f"Erreur de recherche : {e}", "fiches": []}
+    if not trouves:
         titres = lister_titres()
         sujets = ", ".join(titres[:15]) if titres else "(aucune fiche indexée)"
         return {
@@ -263,15 +267,25 @@ def rechercher_fiche(question: str) -> dict:
             "aide": False,
             "titre": None,
             "contenu": f"Rien trouvé. Sujets : {sujets}",
+            "fiches": [],
         }
-    titre, contenu = trouve
-    return {"vide": False, "aide": False, "titre": titre, "contenu": contenu or ""}
+    fiches = [{"titre": t, "contenu": c or ""} for t, c in trouves]
+    return {
+        "vide": False,
+        "aide": False,
+        "titre": fiches[0]["titre"],
+        "contenu": fiches[0]["contenu"],
+        "fiches": fiches,
+    }
 
 
 @app.route("/meshia/login", methods=["GET", "POST"])
 def login():
     if session.get("user") and _compte(session.get("user")):
-        return redirect(url_for("recherche"))
+        nxt = request.args.get("next") or ""
+        if not (nxt.startswith("/meshia") and not nxt.startswith("//")):
+            nxt = url_for("recherche")
+        return redirect(nxt)
     erreur = None
     if request.method == "POST":
         nom = (request.form.get("username") or "").strip()

@@ -22,22 +22,33 @@ MOTS_VIDES = {
 }
 
 
-def chercher(question):
+def _requete_fts(question):
     mots = [m for m in re.findall(r"\w+", question.lower())
             if len(m) >= 3 and m not in MOTS_VIDES]
     if not mots:
         return None
-    requete = " OR ".join(f'"{m}"*' for m in mots)
+    return " OR ".join(f'"{m}"*' for m in mots)
+
+
+def chercher(question):
+    lignes = chercher_tous(question, limite=1)
+    return lignes[0] if lignes else None
+
+
+def chercher_tous(question, limite=20):
+    requete = _requete_fts(question)
+    if not requete:
+        return []
+    lim = max(1, int(limite))
     con = sqlite3.connect(DB)
     try:
-        ligne = con.execute(
+        return con.execute(
             "SELECT titre, contenu FROM fiches WHERE fiches MATCH ? "
-            "ORDER BY bm25(fiches, 5.0, 1.0) LIMIT 1",
-            (requete,),
-        ).fetchone()
+            "ORDER BY bm25(fiches, 5.0, 1.0) LIMIT ?",
+            (requete, lim),
+        ).fetchall()
     finally:
         con.close()
-    return ligne
 
 
 def lister_titres():
