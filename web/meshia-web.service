@@ -1,0 +1,24 @@
+[Unit]
+Description=MeshIA LAN web portal
+After=network.target
+# Ne pas toucher meshia.service ni le port serie.
+
+[Service]
+Type=simple
+User=meshia
+Group=meshia
+WorkingDirectory=/opt/meshia
+ExecStart=/opt/meshia/.venv/bin/python /opt/meshia/web/app.py
+Environment=MESHIA_ROOT=/opt/meshia
+Environment=MESHIA_DB=/opt/meshia/meshia.db
+Environment=MESHIA_WEB_BIND=127.0.0.1
+Environment=MESHIA_WEB_PORT=8765
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+# Pas d'acces au port serie /dev/ttyACM0 (pas de DeviceAllow).
+
+[Install]
+WantedBy=multi-user.target

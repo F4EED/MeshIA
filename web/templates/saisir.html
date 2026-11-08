@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% set actif = "saisir" %}
+{% block title %}Saisir une fiche — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Saisir une fiche</h2>
+  <p class="aide">Enregistre <code>fiches/&lt;titre-safe&gt;.md</code> puis relance <code>ingest.py</code> (toute la base FTS5 est reconstruite).</p>
+  <form method="post">
+    <label for="titre">Titre</label>
+    <input id="titre" name="titre" type="text" required maxlength="120" placeholder="Ex. Eau potable">
+    <label for="texte">Texte</label>
+    <textarea id="texte" name="texte" required placeholder="Contenu de la fiche, phrases courtes…"></textarea>
+    <button class="primaire" type="submit">Enregistrer et indexer</button>
+  </form>
+</div>
+{% endblock %}

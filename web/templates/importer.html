@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% set actif = "importer" %}
+{% block title %}Importer — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Importer un document</h2>
+  <p class="aide">Formats : <strong>txt, md, pdf, doc, docx</strong>. Le texte est extrait, écrit en Markdown, puis indexé comme une fiche. Les .doc anciens sont en best-effort (catdoc / antiword / LibreOffice).</p>
+  <form method="post" enctype="multipart/form-data">
+    <label for="fichier">Fichier</label>
+    <input id="fichier" name="fichier" type="file" required accept=".txt,.md,.pdf,.doc,.docx,text/plain,text/markdown,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+    <label for="titre">Titre (optionnel)</label>
+    <input id="titre" name="titre" type="text" maxlength="120" placeholder="Sinon : nom du fichier">
+    <button class="primaire" type="submit">Importer et indexer</button>
+  </form>
+</div>
+{% endblock %}

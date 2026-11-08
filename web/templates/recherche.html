@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% set actif = "recherche" %}
+{% block title %}Recherche — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Recherche</h2>
+  <p class="aide">Même index FTS5 et même logique que la radio MeshCore : MATCH, accents ignorés, bm25 (titre ×5). <code>aide</code> liste les sujets. Sans résultat : « Rien trouvé ». Texte brut de la fiche (sans Ollama).</p>
+  <form method="post">
+    <label for="q">Question ou mot-clé</label>
+    <input id="q" name="q" type="text" value="{{ question }}" required placeholder="Ex. communication, brûlure, aide">
+    <button class="primaire" type="submit">Chercher</button>
+  </form>
+  {% if resultat is not none %}
+    <h3>Fiche qui partirait à la radio</h3>
+    <pre class="resultat">{{ resultat }}</pre>
+  {% endif %}
+</div>
+{% endblock %}

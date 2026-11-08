@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Connexion — MeshIA{% endblock %}
+{% block body %}
+<div class="card">
+  <h2>Connexion</h2>
+  <p class="aide">Accès réservé au réseau local. Identifiants MeshIA.</p>
+  {% if erreur %}<ul class="flash"><li class="err">{{ erreur }}</li></ul>{% endif %}
+  <form method="post" action="{{ url_for('login') }}">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label for="username">Identifiant</label>
+    <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+    <label for="password">Mot de passe</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+    <button class="primaire" type="submit">Entrer</button>
+  </form>
+</div>
+{% endblock %}
