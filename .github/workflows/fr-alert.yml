@@ -1,0 +1,67 @@
+name: FR-Alert 48h
+
+on:
+  schedule:
+    # 6 h Europe/Paris = 5 h UTC (hiver) ou 4 h UTC (été)
+    - cron: "0 4 * * *"
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install beautifulsoup4
+
+      - name: Garde 6 h Europe/Paris
+        id: guard
+        run: |
+          export TZ=Europe/Paris
+          HOUR=$(date +%H)
+          echo "Heure Paris: $(date -R) (heure=$HOUR)"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Lancement manuel : OK"
+            exit 0
+          fi
+          if [ "$HOUR" = "06" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Cron à 6 h Paris : OK"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Hors créneau 6 h Paris — skip"
+          fi
+
+      - name: Générer fiches FR-Alert 48 h
+        if: steps.guard.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          python tools/fralert_48h.py --hours 48 --outdir fiches/fr-alert
+
+      - name: Commit et push si changement
+        if: steps.guard.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fiches/fr-alert/
+          if git diff --cached --quiet; then
+            echo "Aucun changement dans fiches/fr-alert/"
+            exit 0
+          fi
+          git commit -m "chore(fr-alert): mise a jour automatique des alertes 48 h"
+          git push origin HEAD:main

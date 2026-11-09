@@ -12,7 +12,10 @@ con.execute(
 )
 
 n = 0
-for f in sorted(dossier.glob("*.md")):
+fichiers = list(dossier.glob("*.md"))
+# Alertes FR-Alert générées (sous-dossier, un fichier par alerte récente)
+fichiers += list((dossier / "fr-alert").glob("*.md")) if (dossier / "fr-alert").is_dir() else []
+for f in sorted(set(fichiers), key=lambda x: x.as_posix()):
     lignes = f.read_text(encoding="utf-8").strip().splitlines()
     titre = f.stem
     if lignes and lignes[0].startswith("#"):
@@ -21,7 +24,7 @@ for f in sorted(dossier.glob("*.md")):
     contenu = " ".join(l.strip() for l in lignes if l.strip())
     con.execute(
         "INSERT INTO fiches(titre, contenu, fichier) VALUES (?, ?, ?)",
-        (titre, contenu, f.name),
+        (titre, contenu, f.relative_to(dossier).as_posix()),
     )
     n += 1
 

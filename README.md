@@ -1,12 +1,16 @@
 # MeshIA
 
-**Version du document :** 1.18 — 8 novembre 2026 (Europe/Paris)
+**Version du document :** 1.19 — 9 novembre 2026 (Europe/Paris)
 
 À chaque future mise à jour de ce README, incrémenter ce numéro.
 
 Service de réponses **privées MeshCore** : une question envoyée en message privé au nœud `FR42-Meshia` est rapprochée de fiches Markdown indexées dans **SQLite FTS5** (RAG lexical). Avec `MESHIA_LLM=1`, un LLM local **Ollama** (`qwen2.5:0.5b`) reformule la fiche trouvée ; si Ollama est down, la fiche brute est renvoyée. Un **portail web LAN** (Apache → Flask) permet de saisir/importer des fiches et de tester la même recherche, sans passer par la radio. Les embeddings viendront plus tard. Pas d’HTTPS ni d’ouverture Internet pour l’instant.
 
 Dépôt : [github.com/F4EED/MeshIA](https://github.com/F4EED/MeshIA) — **public**, licence [MIT](LICENSE). Racine locale : `C:\Apps\meshia`.
+
+## FR-Alert (mise a jour automatique)
+
+Le workflow [`.github/workflows/fr-alert.yml`](.github/workflows/fr-alert.yml) lance `tools/fralert_48h.py` chaque jour vers **6 h Europe/Paris** (cron UTC 4 h et 5 h + garde horaire). Il lit https://fr-alert.gouv.fr/les-alertes (HTML, pas d API), ecrit une fiche par alerte des 48 dernieres heures dans `fiches/fr-alert/`, et pousse sur `main` seulement s il y a un changement. Declenchement manuel : Actions > FR-Alert 48h > Run workflow. Sources detaillees : [SOURCES.md](SOURCES.md).
 
 ## Licence
 
@@ -43,7 +47,7 @@ Copie de travail Windows : `C:\Apps\meshia`. Sur le ThinkCentre, le service tour
 - **ThinkCentre** : `ingest.py` reconstruit FTS5 ; `meshia.py` (un seul `/dev/ttyACM0`) répond en MP, envoie les adverts, sans boucle DTR.
 - **Portail web** : Flask + Waitress `127.0.0.1:8765`, Apache `ProxyPass /meshia`. Rôles utilisateur / rédacteur / administrateur. Recherche : **toutes** les fiches MATCH. Import URL : aperçu puis Créer.
 - **Radio** : nœud **autorisé** seulement. Un MATCH → la fiche (130 o). Plusieurs → liste de titres puis 2e MP = le titre. `aide` / `zzzz` inchangés. Inconnu → « Inscription en attente. ». Refusé → « Accès refusé. » une fois, puis silence.
-- **Fiches** : **65** dans git ; **66+** sur le ThinkCentre (tests portail, etc.). Titre = mot-clé ; l’essentiel dans ~120 caractères.
+- **Fiches** : **91** dans git ; **92+** sur le ThinkCentre (tests portail, etc.). Titre = mot-clé ; l’essentiel dans ~120 caractères.
 
 ## Matériel et machine
 
@@ -61,7 +65,7 @@ Ce cloud n’atteint pas le LAN : le relais passe par la machine GMC-Poste-maitr
 ## État d’avancement
 
 - **Étapes 1 à 5** : faites (Debian 13, sudo, nœud MeshCore, venv, paquet `meshcore`).
-- **Étape 6** : faite. `ingest.py`, `meshia.py`, **65** fiches git / **66+** sur la machine.
+- **Étape 6** : faite. `ingest.py`, `meshia.py`, **91** fiches git / **92+** sur la machine.
 - **Étape 8** : faite. Unité systemd `meshia.service` **enabled** + **active**.
 - **Étape 7** : faite. Ollama local `qwen2.5:0.5b`, `MESHIA_LLM=1` (défini dans l’unité systemd) reformule la fiche FTS5, avec fallback texte brut si Ollama est down. RAG = FTS5 ; embeddings plus tard.
 - **Portail web** : fait. `http://192.168.1.57/meshia` (LAN, login/mot de passe). Unité `meshia-web.service` distincte : ne touche ni `meshia.service`, ni `/dev/ttyACM0`, ni Ollama.
@@ -90,7 +94,9 @@ Sur le ThinkCentre, sous `/opt/meshia` :
 ```
 /opt/meshia/
   .venv/          # Python : meshcore, pyserial, flask, waitress, python-docx (non versionné)
-  fiches/         # 65 .md en git (66+ en local ThinkCentre)
+  fiches/         # 91 .md en git (+ fr-alert/ auto) ; 92+ ThinkCentre
+  tools/          # fralert_48h.py (MAJ alertes 48 h)
+  SOURCES.md      # sources des fiches preparation / Loire / FR-Alert
   ingest.py
   meshia.py
   meshia.db       # généré par ingest.py (non versionné)
@@ -105,7 +111,7 @@ Unités systemd : `/etc/systemd/system/meshia.service` (radio) et `meshia-web.se
 
 ## Fiches et sources wiki
 
-**65 fiches** dans git (**66+** indexées sur le ThinkCentre). Origine :
+**91 fiches** dans git (**92+** indexées sur le ThinkCentre). Origine :
 
 - 5 exemples de départ (`brulure`, `saignement`, `eau`, `radio`, `urgence`) ;
 - extraits du wiki [wiki-resilience-pi / wiki_pages](https://github.com/brunodesannicolas/wiki-resilience-pi/tree/main/wiki_pages) (**32 pages**, y compris les `start.txt`) ;
@@ -152,7 +158,7 @@ python ingest.py fiches
 sqlite3 meshia.db "SELECT titre FROM fiches"
 ```
 
-Sortie attendue (clone git) : `65 fiches indexées` ; sur le ThinkCentre souvent **66+**. Vérifier FTS5 : `MATCH 'brulure*'` ou `MATCH 'blackout*'`.
+Sortie attendue (clone git) : `91 fiches indexées` (+ alertes sous `fiches/fr-alert/` si présentes) ; sur le ThinkCentre souvent **92+**. Vérifier FTS5 : `MATCH 'brulure*'` ou `MATCH 'blackout*'`.
 
 Le service 24/7 est **systemd**. Un seul process sur `/dev/ttyACM0` : ne pas lancer `python meshia.py` à la main tant que l’unité tourne.
 
