@@ -1,6 +1,5 @@
 # Crise Europe
-Au 9 nov: aucune nouvelle activation du mecanisme europeen de protection civile.
-Espagne: decret d'aide publie pour les victimes du train d'Urda.
-Seule alerte GDACS en Europe: secheresse, niveau orange, ancienne.
+Au 10 nov: Ukraine, l'UE active le mecanisme europeen de protection civile pour l'energie apres les frappes.
+Besoins: generateurs, abris, materiel medical. La Slovaquie annonce 1 M EUR.
 Danemark: Aarhus teste MeshCore pour communiquer en cas de panne electrique.
-Actualite crise, alerte, catastrophe, urgence, UE, union europeenne, blackout.
+Actualite crise, alerte, catastrophe, urgence, UE, union europeenne, ukraine, energie, blackout.
