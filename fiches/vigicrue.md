@@ -1,5 +1,5 @@
 # Vigicrue
-Au 9 nov: aucun troncon en jaune, orange ou rouge. Tous les cours d'eau en vert.
-337 troncons surveilles, niveau 1 (vert) partout.
-Si orange ou rouge: eloignez-vous des berges, ne traversez pas a gue, montez aux etages.
-vigilance, alerte, crue, inondation, riviere, fleuve, debordement, berge, vigicrues.
+Au 10 nov: jaune sur le Haut Tarn. Aucun troncon orange ou rouge.
+Les 336 autres troncons surveilles sont en vert.
+Jaune: risque de montee des eaux, soyez prudents pres des berges.
+vigilance, alerte, crue, inondation, riviere, fleuve, tarn, debordement, berge, vigicrues.
