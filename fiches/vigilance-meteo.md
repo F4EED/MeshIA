@@ -1,5 +1,6 @@
 # Vigilance meteo
-Au 9 nov: jaune vent sur Pyrenees-Atlantiques (64) jusqu'a 15h. Pas d'orange ni rouge.
-Demain: aucune vigilance prevue en metropole.
-Si orange ou rouge: limitez les deplacements, protegez les objets exposes au vent, suivez les consignes.
-vigilance, alerte, meteo, orage, vent, pluie, neige, canicule, grele, temperie, intemperies.
+Au 10 nov: jaune, pas d'orange ni rouge. Pluie-inondation Gard (30) et Herault (34) de 6h a 9h.
+Jaune avalanches Hautes-Alpes (05) toute la journee.
+Jaune crues Aveyron (12) et Lozere (48).
+Demain 11 nov: jaune crues Aveyron et Lozere.
+vigilance, alerte, meteo, orage, vent, pluie, neige, avalanche, crue, inondation, intemperies.
