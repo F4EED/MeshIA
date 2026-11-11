@@ -1,6 +1,6 @@
 # Crise Monde
-Au 10 nov: typhon Cempaka tres fort pres des Ogasawara (Japon) cette nuit, rafales ~40 m/s, houle 6 m.
-Gaza: environ 70 000 tentes inondees, au moins 5 morts.
-Irak (Erbil): crues eclair, 2 morts, 300 secourus.
-Thailande: 88 morts des inondations depuis septembre. Malaisie: alertes crue.
-Actualite crise, alerte, catastrophe, urgence, cyclone, typhon, inondation, crue, international.
+Au 11 nov: Gaza, inondations, la defense civile en urgence maximale, seuls 218 appels sur 2166 traites.
+Equateur: pluies, 12 morts et 57 625 sinistres.
+Malaisie: 1205 evacues pour crues, surtout Selangor.
+Guatemala: seisme M5,6 au large, sans gros degats.
+Actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, seisme, tremblement de terre, humanitaire, international.
