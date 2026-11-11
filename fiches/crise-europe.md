@@ -1,5 +1,6 @@
 # Crise Europe
-Au 10 nov: Ukraine, l'UE active le mecanisme europeen de protection civile pour l'energie apres les frappes.
-Besoins: generateurs, abris, materiel medical. La Slovaquie annonce 1 M EUR.
-Danemark: Aarhus teste MeshCore pour communiquer en cas de panne electrique.
-Actualite crise, alerte, catastrophe, urgence, UE, union europeenne, ukraine, energie, blackout.
+Au 11 nov: Portugal en situation d'alerte, 8 districts en alerte rouge (depression Charles), ecoles fermees.
+Rafales 120 a 140 km/h. Deja 1240 incidents dont 743 inondations, sans victime.
+Espagne: Andalousie en phase d'urgence inondations, alerte rouge Estremadure, Castille-et-Leon, Canaries.
+Ukraine: l'UE chiffre l'aide energie via la protection civile.
+Actualite crise, alerte, catastrophe, urgence, tempete, depression, vent, inondation, portugal, espagne, ukraine.
