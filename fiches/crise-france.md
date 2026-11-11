@@ -1,6 +1,7 @@
 # Crise France
-Au 10 nov: Corse-du-Sud, arrete CatNat attendu aujourd'hui pour Porto-Vecchio, permanences pour sinistres.
-Jeudi 12 nov: depression Charles, pluies intenses et orages de Provence a la Corse.
-Exercice FR-Alert possible a Auxerre ce matin, exercice PCS a Falaise ce soir.
-Tests FR-Alert le 12 nov a Balan et au Blayais, le 19 nov a Macon (A6).
-Actualite crise, alerte, catastrophe, urgence, inondation, intemperies, exercice, fr-alert, securite civile.
+Au 11 nov: Bonifacio, la digue de l'etang de Frasselli risque de ceder. RT40 fermee, baie de Ventilegne interdite.
+Aucune habitation menacee. Cellule PCS activee, expertise de l'Etat aujourd'hui.
+Jeudi 12: depression Charles, 50 a 100 mm et rafales 90-100 km/h en Provence et Corse.
+Porto-Vecchio: arrete CatNat pas encore paru.
+Tests FR-Alert le 12 a Balan et au Blayais.
+Actualite crise, alerte, catastrophe, urgence, digue, rupture, inondation, intemperies, tempete, corse, fr-alert.
