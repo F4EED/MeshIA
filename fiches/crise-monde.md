@@ -1,6 +1,6 @@
 # Crise Monde
-Au 11 nov: Gaza, inondations, la defense civile en urgence maximale, seuls 218 appels sur 2166 traites.
-Equateur: pluies, 12 morts et 57 625 sinistres.
-Malaisie: 1205 evacues pour crues, surtout Selangor.
-Guatemala: seisme M5,6 au large, sans gros degats.
-Actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, seisme, tremblement de terre, humanitaire, international.
+Au 12 nov: aucune alerte GDACS orange ou rouge en cours, tous les evenements sont en vert.
+Vietnam et Thailande: inondations en cours, 88 morts depuis septembre.
+Japon: typhon Cempaka faiblit en mer a l'est.
+Inondations 2026: 8123 morts de janvier a septembre, pire bilan depuis 2013.
+Actualite crise, alerte, catastrophe, urgence, inondation, crue, typhon, cyclone, tempete, humanitaire, international.
