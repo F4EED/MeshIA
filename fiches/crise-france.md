@@ -1,7 +1,6 @@
 # Crise France
-Au 11 nov: Bonifacio, la digue de l'etang de Frasselli risque de ceder. RT40 fermee, baie de Ventilegne interdite.
-Aucune habitation menacee. Cellule PCS activee, expertise de l'Etat aujourd'hui.
-Jeudi 12: depression Charles, 50 a 100 mm et rafales 90-100 km/h en Provence et Corse.
-Porto-Vecchio: arrete CatNat pas encore paru.
-Tests FR-Alert le 12 a Balan et au Blayais.
-Actualite crise, alerte, catastrophe, urgence, digue, rupture, inondation, intemperies, tempete, corse, fr-alert.
+Au 12 nov: tempete Charles sur le Sud-Est et la Corse, vigilance jaune pluie, vent, orages et vagues.
+Corse: rafales 80 a 100 km/h de 15h a minuit, vagues jusqu'a 5 m au sud.
+Blayais: exercice nucleaire national aujourd'hui, FR-Alert pedagogique, aucune action demandee.
+Bonifacio: digue de Frasselli, pas de conclusion publique du BRGM.
+Actualite crise, alerte, catastrophe, urgence, tempete, charles, pluie, vent, corse, nucleaire, exercice, blayais, fr-alert, digue.
