@@ -1,4 +1,5 @@
 # Vigicrue
-Au 11 nov: tout vert, aucun troncon jaune, orange ou rouge.
-Les 337 troncons surveilles sont en vert. Le Haut Tarn est repasse au vert.
-vigilance, alerte, crue, inondation, riviere, fleuve, debordement, berge, vigicrues.
+Au 12 nov: jaune sur l'Ardeche aval, aucun troncon orange ni rouge.
+Les 336 autres troncons surveilles sont en vert.
+Pluies de la tempete Charles sur le Sud-Est: rester prudent pres des cours d'eau.
+vigilance, alerte, crue, inondation, riviere, fleuve, debordement, berge, vigicrues, ardeche.
