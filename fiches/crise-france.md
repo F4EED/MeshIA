@@ -1,6 +1,7 @@
 # Crise France
-Au 12 nov: tempete Charles sur le Sud-Est et la Corse, vigilance jaune pluie, vent, orages et vagues.
-Corse: rafales 80 a 100 km/h de 15h a minuit, vagues jusqu'a 5 m au sud.
-Blayais: exercice nucleaire national aujourd'hui, FR-Alert pedagogique, aucune action demandee.
-Bonifacio: digue de Frasselli, pas de conclusion publique du BRGM.
-Actualite crise, alerte, catastrophe, urgence, tempete, charles, pluie, vent, corse, nucleaire, exercice, blayais, fr-alert, digue.
+Au 13 nov: apres la tempete Charles, vigilance jaune crues en Corse et dans le Sud-Est, eviter les cours d'eau.
+Corse: crue record du Tavignano a Corte, pont de Baliri endommage et ferme.
+Cannes, Mandelieu: 134 a 140 mm, centres de Mandelieu et Frejus inondes.
+Train coupe entre Saint-Raphael et Les Arcs.
+Blayais: suite de l'exercice nucleaire, phase post-accidentelle.
+Actualite crise, alerte, catastrophe, urgence, tempete, charles, inondation, crue, pluie, corse, cote d'azur, nucleaire, exercice, blayais, fr-alert.
