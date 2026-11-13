@@ -1,6 +1,6 @@
 # Crise Europe
-Au 12 nov: Espagne, Almeria en vigilance orange; plan inondations andalou toujours en phase d'urgence.
-Portugal: alerte levee apres Charles, 1630 incidents, aucun mort.
-UE: vote aujourd'hui du Mecanisme de protection civile 2028-2034.
-Ukraine: frappes, 135 000 abonnes sans courant region d'Odessa.
-Actualite crise, alerte, catastrophe, urgence, tempete, charles, inondation, espagne, portugal, ukraine, protection civile.
+Au 13 nov: Italie, vigilance orange pluie et vent en Ligurie, Emilie-Romagne, Toscane, Ombrie et Latium, 12 regions en jaune.
+Ecoles fermees dans le Levant ligure.
+UE: le Parlement adopte sa position sur le Mecanisme de protection civile 2028-2034, 12,42 Md euros.
+Ukraine: l'UE envoie 500 generateurs rescEU.
+Actualite crise, alerte, catastrophe, urgence, tempete, pluie, vent, inondation, italie, ukraine, protection civile, resceu, generateur.
