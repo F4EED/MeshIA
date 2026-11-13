@@ -1,6 +1,5 @@
 # Crise Monde
-Au 12 nov: aucune alerte GDACS orange ou rouge en cours, tous les evenements sont en vert.
-Vietnam et Thailande: inondations en cours, 88 morts depuis septembre.
-Japon: typhon Cempaka faiblit en mer a l'est.
-Inondations 2026: 8123 morts de janvier a septembre, pire bilan depuis 2013.
-Actualite crise, alerte, catastrophe, urgence, inondation, crue, typhon, cyclone, tempete, humanitaire, international.
+Au 13 nov: aucune nouvelle alerte GDACS orange ou rouge, seulement des seismes en vert (M5,8 Papouasie, M5,1 Grece).
+Canada: evacuations a Pemberton (Colombie-Britannique), route 99 coupee, nouvelle tempete ce week-end.
+Panne mondiale Microsoft 365 (Outlook, Teams) depuis le 12 nov 17h, non resolue a 4h15.
+Actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, tempete, inondation, evacuation, canada, panne, microsoft, outlook, teams, international.
