@@ -1,9 +1,6 @@
 # Vigilance meteo
-Au 13 nov: jaune, pas d'orange ni rouge. Vent et pluie en Corse, vent 13 84, crues Sud-Est, avalanches Alpes.
-Vent: 2A 2B de 6h a 20h; 13 84 de 8h a 16h.
-Pluie: 2A 2B jusqu'a midi.
-Crues: 04 06 07 30 83 2A 2B.
-Vagues: cotes 06 jusqu'a midi, 2A toute la journee.
-Avalanches: 05 38 74.
-Demain 14: jaune crues 04 06 07 30 83 2A 2B.
-vigilance, alerte, meteo, vent, pluie, crue, inondation, vagues, submersion, avalanche, neige, tempete, corse, alpes.
+Au 14 nov: jaune, pas d'orange ni rouge. Pluie et orages 13 30 83 et Corse, orages 32 40 64 65.
+Pluie: 13 30 83 de 10h a minuit; 2A 2B des 21h.
+Orages: 13 30 83 des 12h; 2A 2B des 20h; 32 40 64 65 de 15h a 21h.
+Demain 15: jaune vent sur l'Ouest, le Centre et l'Ile-de-France; orages dans l'Ouest; pluie-orages Sud-Est et Corse jusqu'au matin.
+vigilance, alerte, meteo, orage, pluie, vent, inondation, tempete, corse, provence, gard, var, pyrenees, landes, bretagne, ile-de-france.
