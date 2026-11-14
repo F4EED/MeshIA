@@ -1,5 +1,6 @@
 # Crise Monde
-Au 13 nov: aucune nouvelle alerte GDACS orange ou rouge, seulement des seismes en vert (M5,8 Papouasie, M5,1 Grece).
-Canada: evacuations a Pemberton (Colombie-Britannique), route 99 coupee, nouvelle tempete ce week-end.
-Panne mondiale Microsoft 365 (Outlook, Teams) depuis le 12 nov 17h, non resolue a 4h15.
-Actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, tempete, inondation, evacuation, canada, panne, microsoft, outlook, teams, international.
+Au 14 nov: aucune alerte GDACS orange ou rouge, seulement des seismes en vert (M5,8 Perou, M5,2 Chine). Aucun cyclone actif.
+Canada: ordre d'evacuation leve a Pemberton, alerte maintenue, pluie attendue samedi.
+Indonesie: inondations a Aceh et Langkat, plus de 3000 touches.
+Microsoft 365 retabli apres 24h de panne, pas de cyberattaque.
+Actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, inondation, evacuation, canada, indonesie, panne, microsoft, outlook, teams, international.
