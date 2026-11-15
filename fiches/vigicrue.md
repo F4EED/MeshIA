@@ -1,6 +1,7 @@
 # Vigicrue
-Au 14 nov: tout vert, aucun troncon en jaune, orange ou rouge en metropole.
-Le Tavignano aval (Corse) et les rivieres du Sud-Est sont revenus au vert.
-Pas de vigilance crues particuliere requise.
-Mise a jour au moins deux fois par jour, a 10h et 16h.
-vigilance, alerte, crue, inondation, riviere, fleuve, debordement, berge, vigicrues, vert, corse, tavignano.
+Au 15 nov: jaune sur 7 troncons, aucun orange ni rouge.
+Gard: Vistre. Ardeche aval. Var: Var amont, Var moyen, Argens aval.
+Corse: Tavignano aval, Gravona amont.
+Tout le reste de la metropole est vert.
+Restez prudents pres des cours d'eau en jaune.
+vigilance, alerte, crue, inondation, riviere, fleuve, debordement, berge, vigicrues, jaune, gard, vistre, ardeche, var, argens, corse, tavignano, gravona.
