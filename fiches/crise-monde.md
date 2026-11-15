@@ -1,6 +1,5 @@
 # Crise Monde
-Au 14 nov: aucune alerte GDACS orange ou rouge, seulement des seismes en vert (M5,8 Perou, M5,2 Chine). Aucun cyclone actif.
-Canada: ordre d'evacuation leve a Pemberton, alerte maintenue, pluie attendue samedi.
-Indonesie: inondations a Aceh et Langkat, plus de 3000 touches.
-Microsoft 365 retabli apres 24h de panne, pas de cyberattaque.
-Actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, inondation, evacuation, canada, indonesie, panne, microsoft, outlook, teams, international.
+Au 15 nov: aucune alerte GDACS orange ou rouge, seulement des seismes M4,5 a M5,5 en vert.
+Equateur: pluies El Nino, 2 morts et 2 disparus a Guayaquil, 14 morts dans le pays depuis fin aout.
+Malaisie: 1787 sinistres encore en centres d'accueil, alertes orages dans 9 Etats.
+Actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, inondation, pluie, el nino, equateur, guayaquil, malaisie, sinistres, international.
