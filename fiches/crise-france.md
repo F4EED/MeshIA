@@ -1,6 +1,8 @@
 # Crise France
-Au 14 nov: fin de l'episode Charles, jusqu'a 194 mm en Corse et 141 mm a Cannes en 48h, pas encore de bilan officiel.
-Nouvelle vigilance jaune pluie et orages ce 14 nov: 13, 30, 83, Corse.
-Blayais: l'exercice nucleaire revele des sirenes muettes et des alertes FR-Alert non recues.
-Greve des pompiers prolongee jusqu'au 4 dec.
-Actualite crise, alerte, catastrophe, urgence, tempete, charles, inondation, pluie, orage, corse, cote d'azur, nucleaire, exercice, blayais, sirene, fr-alert, pompiers, greve.
+Au 15 nov: fin de l'orange pluie-inondation dans le Gard, l'Herault et les Bouches-du-Rhone, tout est jaune a 6h.
+Pas encore de bilan de la nuit. Gard: COD ouvert samedi soir.
+Ne jamais s'engager sur une route inondee.
+Jaune vent sur 55 departements ce 15 nov.
+Coup de vent possible mardi 17 au nord-ouest.
+Docaposte: adresses de 22 millions de personnes volees.
+Actualite crise, alerte, catastrophe, urgence, inondation, pluie, orage, crue, vent, tempete, gard, herault, bouches-du-rhone, marseille, nimes, montpellier, cyberattaque, fuite de donnees, docaposte, la poste.
