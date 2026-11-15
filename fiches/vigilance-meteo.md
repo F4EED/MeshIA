@@ -1,6 +1,6 @@
 # Vigilance meteo
-Au 14 nov: jaune, pas d'orange ni rouge. Pluie et orages 13 30 83 et Corse, orages 32 40 64 65.
-Pluie: 13 30 83 de 10h a minuit; 2A 2B des 21h.
-Orages: 13 30 83 des 12h; 2A 2B des 20h; 32 40 64 65 de 15h a 21h.
-Demain 15: jaune vent sur l'Ouest, le Centre et l'Ile-de-France; orages dans l'Ouest; pluie-orages Sud-Est et Corse jusqu'au matin.
-vigilance, alerte, meteo, orage, pluie, vent, inondation, tempete, corse, provence, gard, var, pyrenees, landes, bretagne, ile-de-france.
+Au 15 nov: jaune, pas d'orange ni rouge. Vent fort sur 55 departements, de l'Ouest au Nord-Est, de midi a la nuit.
+Orages Bretagne, Pays de la Loire, Normandie, Charentes, Gironde jusqu'a 17h-19h.
+Pluie-orages Corse jusqu'a midi. Crues 30 34 83. Avalanches 05 74.
+Demain 16: vent Nord-Est la nuit, puis Bretagne le soir avec pluie 29 56; orages Corse la nuit.
+vigilance, alerte, meteo, vent, tempete, rafales, orage, pluie, crue, avalanche, bretagne, normandie, vendee, gironde, ile-de-france, alsace, lorraine, corse, gard, herault, var.
