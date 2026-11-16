@@ -1,6 +1,6 @@
 # Vigilance meteo
-Au 15 nov: jaune, pas d'orange ni rouge. Vent fort sur 55 departements, de l'Ouest au Nord-Est, de midi a la nuit.
-Orages Bretagne, Pays de la Loire, Normandie, Charentes, Gironde jusqu'a 17h-19h.
-Pluie-orages Corse jusqu'a midi. Crues 30 34 83. Avalanches 05 74.
-Demain 16: vent Nord-Est la nuit, puis Bretagne le soir avec pluie 29 56; orages Corse la nuit.
-vigilance, alerte, meteo, vent, tempete, rafales, orage, pluie, crue, avalanche, bretagne, normandie, vendee, gironde, ile-de-france, alsace, lorraine, corse, gard, herault, var.
+Au 16 nov: jaune, pas d'orange ni rouge. Vent 22 29 2A 2B 44 56 64 85. Pluie 22 29 50 56.
+Crues Gard (30). Avalanches 05 38 74.
+Demain 17: vent fort sur 56 departements, du Nord-Ouest au Nord-Est et au Centre.
+Demain aussi pluie sur 22 departements, orages Bretagne, Normandie, Pays de la Loire.
+vigilance, alerte, meteo, vent, tempete, rafales, orage, pluie, crue, avalanche, bretagne, normandie, vendee, corse, gard, alpes, nord-est, ile-de-france.
