@@ -1,8 +1,7 @@
 # Crise France
-Au 15 nov: fin de l'orange pluie-inondation dans le Gard, l'Herault et les Bouches-du-Rhone, tout est jaune a 6h.
-Pas encore de bilan de la nuit. Gard: COD ouvert samedi soir.
+Au 16 nov: plus d'orange, 34 departements en jaune. Coup de vent voire tempete mardi 17, 110-120 km/h sur la Manche.
+Herault: 190 mm a Montpellier, 105 mises en securite. La disparue de 73 ans retrouvee saine et sauve.
+Gard: jaune crues, decrue a suivre.
 Ne jamais s'engager sur une route inondee.
-Jaune vent sur 55 departements ce 15 nov.
-Coup de vent possible mardi 17 au nord-ouest.
-Docaposte: adresses de 22 millions de personnes volees.
-Actualite crise, alerte, catastrophe, urgence, inondation, pluie, orage, crue, vent, tempete, gard, herault, bouches-du-rhone, marseille, nimes, montpellier, cyberattaque, fuite de donnees, docaposte, la poste.
+Artifices et mortiers interdits jusqu'au 27 nov.
+Actualite crise, alerte, catastrophe, urgence, inondation, pluie, crue, vent, tempete, chloe, herault, montpellier, gard, manche, corse, artifices, petards, ordre public.
