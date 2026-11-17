@@ -1,6 +1,6 @@
 # Crise Europe
-Au 16 nov: tempete Chloe (nom Met Office) attendue mardi 17 sur la Manche, rafales 110-120 km/h cote francaise.
-Italie: nouvel episode de pluie prevu le 16 nov sur l'est de la Ligurie.
-Ligurie et Toscane restent fragiles apres les crues.
+Au 17 nov: coup de vent sur la Manche et le nord de la France, tempete Chloe selon le Met Office.
+Exercice franco-italien au tunnel du Frejus: collision et feu de poids lourd, plan de secours binational teste.
+Portugal: projet Floodgate, prevision des inondations par commune (radar, IA, capteurs).
 Aucune activation du Mecanisme europeen de protection civile signalee.
-Actualite crise, alerte, catastrophe, urgence, tempete, vent, chloe, manche, royaume-uni, inondation, pluie, italie, ligurie, toscane, protection civile.
+Actualite crise, alerte, catastrophe, urgence, tempete, vent, chloe, manche, royaume-uni, tunnel, frejus, italie, exercice, portugal, inondation, protection civile.
