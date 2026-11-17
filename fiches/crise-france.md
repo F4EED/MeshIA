@@ -1,7 +1,7 @@
 # Crise France
-Au 16 nov: plus d'orange, 34 departements en jaune. Coup de vent voire tempete mardi 17, 110-120 km/h sur la Manche.
-Herault: 190 mm a Montpellier, 105 mises en securite. La disparue de 73 ans retrouvee saine et sauve.
-Gard: jaune crues, decrue a suivre.
-Ne jamais s'engager sur une route inondee.
-Artifices et mortiers interdits jusqu'au 27 nov.
-Actualite crise, alerte, catastrophe, urgence, inondation, pluie, crue, vent, tempete, chloe, herault, montpellier, gard, manche, corse, artifices, petards, ordre public.
+Au 17 nov: coup de vent sur la moitie nord, rafales 80-100 km/h. Vigilance jaune vent 66 dep, aucun orange.
+SNCF: 6 lignes TER Hauts-de-France coupees toute la journee, reprise mercredi 18.
+Corse-du-Sud: jaune pluie de 14h a 1h, 20-60 mm, mer forte.
+Assemblee: vote aujourd'hui de la loi resilience et cybersecurite.
+Gard: jaune crues sur le Vistre.
+Actualite crise, alerte, catastrophe, urgence, vent, tempete, rafales, coup de vent, pluie, orage, inondation, crue, sncf, ter, train, hauts-de-france, corse, gard, loi, cybersecurite.
