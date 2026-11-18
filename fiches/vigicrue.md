@@ -1,5 +1,5 @@
 # Vigicrue
-Au 17 nov: jaune sur 1 seul troncon, le Vistre (Gard). Aucun orange ni rouge.
-Tous les autres troncons de la metropole sont verts.
+Au 18 nov: jaune sur 5 troncons: Liane, Lawe-Clarence amont, Hem, Lys amont-Laquette (Hauts-de-France) et Isere grenobloise.
+Aucun orange ni rouge. Les autres troncons sont verts.
 Restez prudents pres des cours d'eau en jaune.
-vigilance, alerte, crue, inondation, riviere, fleuve, debordement, berge, vigicrues, jaune, vert, gard, vistre, nimes.
+vigilance, alerte, crue, inondation, riviere, debordement, vigicrues, jaune, pas-de-calais, nord, liane, lawe, hem, lys, isere, grenoble.
