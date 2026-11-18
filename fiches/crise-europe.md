@@ -1,6 +1,6 @@
 # Crise Europe
-Au 17 nov: coup de vent sur la Manche et le nord de la France, tempete Chloe selon le Met Office.
-Exercice franco-italien au tunnel du Frejus: collision et feu de poids lourd, plan de secours binational teste.
-Portugal: projet Floodgate, prevision des inondations par commune (radar, IA, capteurs).
+Au 18 nov: seisme M5,7 dans le Vrancea (Roumanie) a 1h48, ressenti a Bucarest et Chisinau. Aucun degat ni victime signale.
+L'alerte automatique annoncait d'abord 6,5. GDACS: alerte verte.
+Repliques possibles a surveiller.
 Aucune activation du Mecanisme europeen de protection civile signalee.
-Actualite crise, alerte, catastrophe, urgence, tempete, vent, chloe, manche, royaume-uni, tunnel, frejus, italie, exercice, portugal, inondation, protection civile.
+actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, roumanie, vrancea, bucarest, moldavie, chisinau, replique, ro-alert, protection civile.
