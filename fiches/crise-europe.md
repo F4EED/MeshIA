@@ -1,6 +1,6 @@
 # Crise Europe
-Au 18 nov: seisme M5,7 dans le Vrancea (Roumanie) a 1h48, ressenti a Bucarest et Chisinau. Aucun degat ni victime signale.
-L'alerte automatique annoncait d'abord 6,5. GDACS: alerte verte.
-Repliques possibles a surveiller.
-Aucune activation du Mecanisme europeen de protection civile signalee.
-actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, roumanie, vrancea, bucarest, moldavie, chisinau, replique, ro-alert, protection civile.
+Au 19 nov: aucune activation du Mecanisme europeen de protection civile signalee, pas de nouvelle crise majeure.
+Roumanie: seisme M5,7 du 18 nov dans le Vrancea, sans degat ni victime confirmee.
+GDACS: aucune alerte orange ou rouge en Europe.
+LoRaWAN satellite 868 MHz autorise dans 6 pays europeens, pas en France.
+actualite crise, alerte, catastrophe, urgence, europe, seisme, tremblement de terre, roumanie, vrancea, bucarest, protection civile, lorawan, satellite.
