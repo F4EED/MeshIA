@@ -1,7 +1,7 @@
 # Crise France
-Au 18 nov: vigilance orange pluie-inondation Somme et Pas-de-Calais jusqu'a 18h, 50 a 70 mm. Prolongation possible jeudi.
-TER Amiens-Calais et Abancourt-Le Treport coupes jusqu'a midi.
-Jeudi 19: vent violent en Corse, 150 a 170 km/h au Cap Corse.
-Exercices FR-Alert ce jour: crue Loire a Tours, nucleaire Saint-Alban.
-Loi resilience et cybersecurite adoptee a l'Assemblee.
-actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, orange, somme, pas-de-calais, sncf, ter, train, vent, tempete, corse, exercice, fr-alert, nucleaire, loire, tours, loi, cybersecurite.
+Au 19 nov: vigilance orange pluie-inondation Somme, Pas-de-Calais et Seine-Maritime jusqu'a 23h59, 50 a 100 mm.
+Pas-de-Calais: 15 evacues, 7 maisons touchees. Somme: 54 interventions.
+Corse: rafales 150 a 170 km/h au Cap Corse, jaune.
+Forges-les-Eaux: incendie d'un manoir, 11 victimes.
+Herault: 1er exercice guerre hybride.
+actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, orange, somme, pas-de-calais, seine-maritime, evacuation, vent, tempete, corse, incendie, feu, forges-les-eaux, exercice, guerre hybride, drone, cyberattaque.
