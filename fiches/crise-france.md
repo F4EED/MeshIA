@@ -1,7 +1,7 @@
 # Crise France
-Au 19 nov: vigilance orange pluie-inondation Somme, Pas-de-Calais et Seine-Maritime jusqu'a 23h59, 50 a 100 mm.
-Pas-de-Calais: 15 evacues, 7 maisons touchees. Somme: 54 interventions.
-Corse: rafales 150 a 170 km/h au Cap Corse, jaune.
-Forges-les-Eaux: incendie d'un manoir, 11 victimes.
-Herault: 1er exercice guerre hybride.
-actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, orange, somme, pas-de-calais, seine-maritime, evacuation, vent, tempete, corse, incendie, feu, forges-les-eaux, exercice, guerre hybride, drone, cyberattaque.
+Au 20 nov: Pas-de-Calais en plan ORSEC inondation (112 communes), 300 evacues a Montreuil, digue de Neuville fragile.
+132 ecoles fermees ce jour dans le Montreuillois et les 7 Vallees.
+Orange pluie 14 40 50 62 76 80, crues Canche et Lys amont.
+Corse: orange vent jusqu'a 21h, 130 a 160 km/h.
+Cyber: menace grave, un 17 cyber annonce.
+actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, evacuation, digue, orsec, ecole, pas-de-calais, montreuil, canche, somme, normandie, manche, calvados, vent, tempete, corse, cyber, cyberattaque.
