@@ -1,5 +1,6 @@
 # Vigicrue
-Au 19 nov: orange sur la Canche (Pas-de-Calais). Jaune sur 8 troncons.
-Jaune: Aa, Liane, Hem, Lawe-Clarence amont, Lys amont-Laquette, Lys plaine, Tavignano aval, Gravona amont (Corse).
+Au 20 nov: orange sur la Canche et la Lys amont-Laquette (Pas-de-Calais). Jaune sur 5 troncons.
+Jaune: Aa, Liane, Hem, Lawe-Clarence amont, Lys plaine.
 Orange: eloignez-vous des berges, ne traversez pas une zone inondee.
-vigilance, alerte, crue, inondation, riviere, debordement, vigicrues, orange, jaune, pas-de-calais, nord, canche, aa, liane, lys, hem, lawe, corse, tavignano, gravona.
+Reste du territoire en vert.
+vigilance, alerte, crue, inondation, riviere, debordement, vigicrues, orange, jaune, pas-de-calais, nord, canche, lys, aa, liane, hem, lawe.
