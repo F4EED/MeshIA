@@ -1,6 +1,7 @@
 # Crise Monde
-Au 21 nov: seisme M6,8 au Perou (Junin), ressenti a Lima, aucun degat signale, pas de menace de tsunami.
-Inde: le cyclone Akvan a touche terre en Odisha puis s'est affaibli.
-Aucun mort selon les autorites, plus de 300 000 personnes avaient ete mises a l'abri.
-GDACS: aucune alerte orange ou rouge.
-actualite crise, alerte, catastrophe, urgence, seisme, tremblement de terre, perou, lima, tsunami, cyclone, tempete, inde, odisha, akvan, evacuation, international.
+Au 22 nov: Floride en etat d'urgence partiel apres plus de 30 cm de pluie, secours en bateau a Daytona Beach.
+Malaisie: inondations en recul, 2334 evacues (Perak, Selangor).
+Inde: Akvan affaibli en depression, l'Odisha se prepare a des crues.
+Perou: seisme du 20 nov reevalue a M6,9, aucun degat.
+Georgie (USA): feu de foret a Ellijay, 17 caravanes detruites.
+actualite crise, alerte, catastrophe, urgence, inondation, pluie, floride, etats-unis, malaisie, evacuation, cyclone, inde, odisha, akvan, seisme, tremblement de terre, perou, feu de foret, incendie, georgie, international.
