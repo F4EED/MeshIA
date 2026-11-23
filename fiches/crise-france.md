@@ -1,6 +1,6 @@
 # Crise France
-Au 22 nov: Pas-de-Calais toujours en orange crues (Canche), pic passe mais situation fragile, 850 logements touches, 0 victime.
-Ain et Jura en orange pluie-inondation, jusqu'a 100 mm sur le Haut-Jura.
-Coup de vent: 120 a 140 km/h reliefs du Languedoc et Roussillon, 130 km/h cap Corse.
-170 foyers encore sans courant samedi dans le 62.
-actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, pas-de-calais, canche, lys, authie, jura, ain, vent, tempete, rafales, corse, languedoc, roussillon, coupure, electricite.
+Au 23 nov: Corse en orange vent jusqu'a 10h, rafales 140 a 170 km/h au cap Corse. Pas-de-Calais toujours orange crues.
+Canche: decrue tres lente, 850 logements inondes, 0 victime. Grandes marees des le 25 nov.
+Ain et Jura: 50 a 80 mm tombes, repassent en jaune ce matin.
+Guadeloupe: CHU en plan blanc apres une cyberattaque, appelez le 15 avant de venir.
+actualite crise, alerte, catastrophe, urgence, tempete, vent, rafales, corse, libeccio, crue, inondation, pas-de-calais, canche, pluie, ain, jura, cyberattaque, hopital, chu, guadeloupe, plan blanc.
