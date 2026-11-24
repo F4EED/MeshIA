@@ -1,5 +1,6 @@
 # Crise Monde
-Au 23 nov: Floride, crue record du fleuve Saint-Johns apres jusqu'a 62 cm de pluie en 3 jours, pic attendu mer a ven.
-Malaisie: 1976 evacues (Selangor, Perak), reservoir de Bukit Merah au-dessus du seuil de danger.
-Inde: l'Odisha evalue les degats du cyclone Akvan.
-actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, floride, etats-unis, malaisie, evacuation, barrage, cyclone, inde, odisha, akvan, international.
+Au 24 nov: Floride, crue record du fleuve Saint-Johns, pres de 500 sauvetages, d'autres inondations possibles.
+L'eau peut rester des semaines a Sanford, DeLand et Astor.
+Bali: 20 incidents apres de fortes pluies, 1 mort et 1 disparu.
+Nepal: l'Inde promet 1,62 milliard de dollars pour reconstruire apres les inondations.
+actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, floride, etats-unis, sauvetage, bali, indonesie, glissement de terrain, nepal, inde, aide, reconstruction, international.
