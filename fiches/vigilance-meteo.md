@@ -1,7 +1,6 @@
 # Vigilance meteo
-Au 23 nov: orange vent Corse (2A 2B) et orange crues Pas-de-Calais (62). Ain et Jura repassent en jaune.
-Jaune pluie 01 25 39, neige 38 73 74, vagues Corse, avalanches 04 05 06 38 73 74.
-Jaune crues 01 14 25 38 39 50 61 69 73.
-Orange: limitez vos deplacements, evitez berges et bois.
-Demain 24: orange crues 62, jaune crues et avalanches.
-vigilance, alerte, meteo, orange, jaune, vent, tempete, rafales, pluie, inondation, crue, neige, avalanche, vagues, submersion, corse, pas-de-calais, ain, jura, doubs, alpes, savoie.
+Au 24 nov: ni orange ni rouge. Jaune crues 01 14 25 38 39 42 50 62 69, avalanches 05 38 73 74.
+Le Pas-de-Calais repasse en jaune crues. La Corse n'est plus en vigilance.
+Demain 25: jaune vent 32 40 64 65 et vagues cote landaise et basque.
+Demain aussi jaune pluie et orages dans le Sud, neige 04 05 08 54 55 57 67 68 90.
+vigilance, alerte, meteo, jaune, crue, inondation, avalanche, vent, vagues, submersion, pluie, orage, neige, pas-de-calais, ain, doubs, rhone, alpes, landes, pyrenees, gers, alsace, lorraine, sud-est.
