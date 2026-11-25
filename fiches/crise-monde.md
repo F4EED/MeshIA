@@ -1,6 +1,6 @@
 # Crise Monde
-Au 24 nov: Floride, crue record du fleuve Saint-Johns, pres de 500 sauvetages, d'autres inondations possibles.
-L'eau peut rester des semaines a Sanford, DeLand et Astor.
-Bali: 20 incidents apres de fortes pluies, 1 mort et 1 disparu.
-Nepal: l'Inde promet 1,62 milliard de dollars pour reconstruire apres les inondations.
-actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, floride, etats-unis, sauvetage, bali, indonesie, glissement de terrain, nepal, inde, aide, reconstruction, international.
+Au 25 nov: Floride, le fleuve Saint-Johns bat son record (13,11 pieds), etat d'urgence dans 23 comtes, d'autres pluies prevues.
+DeSantis demande une nouvelle declaration federale de catastrophe majeure.
+Nepal: seisme de magnitude 5,3 dans la province de Koshi, aucune victime, une ecole fissuree.
+Ressenti en Inde, au Bhoutan et en Chine.
+actualite crise, alerte, catastrophe, urgence, inondation, crue, pluie, floride, etats-unis, record, seisme, tremblement de terre, nepal, koshi, inde, bhoutan, chine, international.
