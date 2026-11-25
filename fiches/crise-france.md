@@ -1,7 +1,6 @@
 # Crise France
-Au 24 nov: Pas-de-Calais, orange crues leve, Canche en jaune. CatNat acceleree, commission jeudi 26 nov.
-196 communes touchees, plus de 860 logements inondes. Grandes marees des le 25.
-Corse: rafale record 191 km/h au cap Sagro. Ain: decrue, routes coupees.
-Ce matin: tests FR-Alert Saint-Fons (69) et Opoul-Perillos (66), exercice.
-Guadeloupe: CHU cyberattaque, enquete ouverte.
-actualite crise, alerte, catastrophe, urgence, crue, inondation, pas-de-calais, canche, catnat, catastrophe naturelle, tempete, vent, rafales, corse, ain, fr-alert, exercice, sirene, seveso, cyberattaque, hopital, chu, guadeloupe.
+Au 25 nov: Var et Alpes-Maritimes en orange pluie-inondation jusqu'a 22h, 120 a 150 mm, Gapeau en orange crues.
+Nice: PC communal actif, parcs, jardins et sentier du littoral fermes.
+Pas-de-Calais: ORSEC inondations leve, commission CatNat jeudi 26.
+Cyber: rancongiciel probable au CHU de Guadeloupe, soins reportes au 27. CHU Bordeaux et INCa touches.
+actualite crise, alerte, catastrophe, urgence, pluie, orage, inondation, crue, episode mediterraneen, var, alpes-maritimes, nice, gapeau, pas-de-calais, orsec, catnat, cyberattaque, rancongiciel, hopital, chu, guadeloupe, bordeaux, inca.
