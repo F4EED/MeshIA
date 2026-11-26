@@ -1,6 +1,6 @@
 # Crise France
-Au 25 nov: Var et Alpes-Maritimes en orange pluie-inondation jusqu'a 22h, 120 a 150 mm, Gapeau en orange crues.
-Nice: PC communal actif, parcs, jardins et sentier du littoral fermes.
-Pas-de-Calais: ORSEC inondations leve, commission CatNat jeudi 26.
-Cyber: rancongiciel probable au CHU de Guadeloupe, soins reportes au 27. CHU Bordeaux et INCa touches.
-actualite crise, alerte, catastrophe, urgence, pluie, orage, inondation, crue, episode mediterraneen, var, alpes-maritimes, nice, gapeau, pas-de-calais, orsec, catnat, cyberattaque, rancongiciel, hopital, chu, guadeloupe, bordeaux, inca.
+Au 26 nov: Var, decrue apres l'episode mediterraneen, 170 mm a Cogolin, record de novembre. Gapeau en jaune crues.
+Pres de 60 personnes mises en securite, 3 helitreuillages. Aerodrome de La Mole ferme.
+Cyber: CHU de Guadeloupe sans informatique pour plusieurs semaines. CHU Bordeaux: CNIL saisie.
+Aujourd'hui: CatNat Pas-de-Calais, tests FR-Alert Loiret et Deux-Sevres.
+actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, episode mediterraneen, var, cogolin, saint-tropez, gapeau, helitreuillage, cyberattaque, rancongiciel, hopital, chu, guadeloupe, bordeaux, catnat, pas-de-calais, fr-alert, exercice.
