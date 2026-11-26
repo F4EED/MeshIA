@@ -1,6 +1,6 @@
 # Vigicrue
-Au 25 nov: le Gapeau (Var) est en orange. Jaune sur 14 troncons, surtout dans le Sud-Est.
-Jaune: Argens aval, Nartuby, Huveaune, Aygues, Ouveze, Calavon, Vistre, Baume-Chassezac.
-Aussi jaune: Canche, Odet, Doubs (2), Haut Rhone aval Ain, Garonne-Dordogne.
-Orange: eloignez-vous des cours d'eau, ne traversez pas une zone inondee.
-vigilance, alerte, crue, inondation, riviere, debordement, vigicrues, orange, jaune, var, gapeau, argens, nartuby, huveaune, vaucluse, gard, ardeche, canche, odet, doubs, rhone, garonne, dordogne.
+Au 26 nov: aucun troncon en orange ou rouge. Le Gapeau (Var) redescend en jaune. Jaune sur 8 troncons.
+Jaune: Gapeau, Argens aval, Nartuby, Aygues, Ouveze, Calavon-Coulon.
+Aussi jaune: Saone a Lyon, confluence Garonne-Dordogne.
+Jaune: restez prudents pres des cours d'eau.
+vigilance, alerte, crue, inondation, riviere, debordement, vigicrues, jaune, var, gapeau, argens, nartuby, vaucluse, drome, ouveze, saone, lyon, garonne, dordogne, gironde.
