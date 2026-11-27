@@ -1,6 +1,7 @@
 # Crise France
-Au 26 nov: Var, decrue apres l'episode mediterraneen, 170 mm a Cogolin, record de novembre. Gapeau en jaune crues.
-Pres de 60 personnes mises en securite, 3 helitreuillages. Aerodrome de La Mole ferme.
-Cyber: CHU de Guadeloupe sans informatique pour plusieurs semaines. CHU Bordeaux: CNIL saisie.
-Aujourd'hui: CatNat Pas-de-Calais, tests FR-Alert Loiret et Deux-Sevres.
-actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, episode mediterraneen, var, cogolin, saint-tropez, gapeau, helitreuillage, cyberattaque, rancongiciel, hopital, chu, guadeloupe, bordeaux, catnat, pas-de-calais, fr-alert, exercice.
+Au 27 nov: Var, bilan definitif, record de 218 mm a Cogolin, pres de 60 personnes mises en securite.
+Pompages a Cogolin et Grimaud. Gapeau, Nartuby, Argens aval en jaune crues.
+Pas-de-Calais: arrete CatNat attendu samedi 28. Plan d'action sur la Canche.
+Guyane: secheresse, plan ORSEC, eau du Lawa rendue potable.
+Herault: exercice barrage du Salagou mardi 1er dec, sirenes et FR-Alert possibles.
+actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, episode mediterraneen, var, cogolin, grimaud, gapeau, pas-de-calais, canche, catnat, guyane, secheresse, eau potable, orsec, herault, salagou, barrage, exercice, sirene, fr-alert.
