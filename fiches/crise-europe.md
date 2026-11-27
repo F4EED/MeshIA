@@ -1,6 +1,6 @@
 # Crise Europe
-Au 26 nov: aucune activation nouvelle du Mecanisme europeen de protection civile signalee.
-Conseil europeen les 26 et 27 nov sur le budget 2028-2034, protection civile concernee.
-Allemagne: exercice radio d'urgence MeshCore les 28 et 29 nov, 10h-11h, region Cologne-Bonn, ouvert a tous.
-Canal emergency, scope rheinland, aussi relais, simplex et Winlink.
-actualite crise, alerte, catastrophe, urgence, europe, union europeenne, protection civile, mecanisme, budget, conseil europeen, allemagne, cologne, exercice, radio, radioamateur, meshcore, mesh.
+Au 27 nov: sommet UE sans accord sur le budget 2028-2034, nouvel essai les 17 et 18 dec.
+La protection civile europeenne en depend. Aucune activation nouvelle du Mecanisme signalee.
+Allemagne: exercice radio d'urgence MeshCore samedi 28 et dimanche 29 nov, 10h-11h, region Cologne-Bonn, ouvert a tous.
+Canal emergency, scope rheinland.
+actualite crise, alerte, catastrophe, urgence, europe, union europeenne, protection civile, mecanisme, budget, conseil europeen, sommet, allemagne, cologne, bonn, exercice, radio, radioamateur, meshcore, mesh.
