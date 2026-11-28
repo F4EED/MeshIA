@@ -1,7 +1,6 @@
 # Crise France
-Au 27 nov: Var, bilan definitif, record de 218 mm a Cogolin, pres de 60 personnes mises en securite.
-Pompages a Cogolin et Grimaud. Gapeau, Nartuby, Argens aval en jaune crues.
-Pas-de-Calais: arrete CatNat attendu samedi 28. Plan d'action sur la Canche.
-Guyane: secheresse, plan ORSEC, eau du Lawa rendue potable.
-Herault: exercice barrage du Salagou mardi 1er dec, sirenes et FR-Alert possibles.
-actualite crise, alerte, catastrophe, urgence, pluie, inondation, crue, episode mediterraneen, var, cogolin, grimaud, gapeau, pas-de-calais, canche, catnat, guyane, secheresse, eau potable, orsec, herault, salagou, barrage, exercice, sirene, fr-alert.
+Au 28 nov: exercice tsunami lundi 30 nov a Nice et Cannes, FR-Alert et alerte radio DAB+ a 14h30, sirenes.
+Pas-de-Calais: arrete CatNat publie au JO du 28, liste des communes non verifiee.
+Brimeux inondee 4 fois, 39 evacues. Pas de fonds Barnier sans budget, dit le ministre.
+Exercices FR-Alert: Salagou et Pierrelatte mardi 1er dec, barrage de Villefort jeudi 3 dec.
+actualite crise, alerte, catastrophe, urgence, exercice, tsunami, nice, cannes, alpes-maritimes, fr-alert, dab, radio, sirene, pas-de-calais, brimeux, canche, inondation, catnat, barnier, herault, salagou, drome, pierrelatte, lozere, villefort, ardeche, barrage, var, incendie, gros bessillon.
